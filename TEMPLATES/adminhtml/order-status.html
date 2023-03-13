@@ -1,0 +1,45 @@
+{% extends 'adminhtml/index.html' %}
+{% load static %}
+
+
+
+{% block content %}
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<h1 class="h3 mb-3">Category Managment</h1>
+
+					<div class="row">
+						<div class="col-6">
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0"> Add Category</h5>
+								</div>
+								<div class="card-body">
+									<form method="POST">
+										{% csrf_token %}
+										<!-- Name input -->
+										
+										  <div class="form-outline mb-4">
+											<select name="status" class="form-control" required>
+												<option disabled selected>Choose Status</option>
+												{% for status, _ in status_options %}
+												<option value="{{status}}">{{status}}</option>
+												{% endfor %}
+									        </select>
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										
+										<!-- Submit button -->
+										<button type="submit" class="btn btn-dark btn-block mb-4">Change Status</button>
+									  </form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			
+			{% endblock content %}

@@ -1,0 +1,71 @@
+{% extends 'flip/index.html' %}
+{% load static %}
+{% block sidebar %}{% endblock sidebar %}
+
+{% block content %}
+
+
+<div class="container">
+	<div class="row">
+<section>
+	
+	<div class="box-root  padding-bottom--24 flex-flex flex-justifyContent--center">
+			
+	</div>
+	<div class="box-root flex-flex flex-justifyContent--center error">
+	</div>
+		  <div class="formbg-outer">
+			<div class="formbg">
+				<div class="flex-flex flex-justifyContent--center">
+				<h4><a>User Login</a></h4>
+				</div>
+			  <div class="formbg-inner padding-horizontal--48">
+				<span class="padding-bottom--15">Login to your account</span>
+				{%for message in messages%}
+				<div{%if message.tags%} class="alert alert-{{message.tags}}"{%endif%} role="alert">
+				  {{message}} 
+				 
+			  </div>
+			  {%endfor%}
+  
+				<form action="{% url 'login' %}" method="POST" id="stripe-login">
+					{% csrf_token %}
+				  <div class="field padding-bottom--24">
+					<label for="email">Email</label>
+					<input type="text" name="email" placeholder="Enter Email">
+				  </div>
+  
+				  <div class="field padding-bottom--24">
+					<div class="grid--50-50">
+					  <label for="password">Password</label>
+					  <div class="reset-pass">
+						<a href="{% url 'password_reset' %}">Forgot your password?</a>
+					  </div>
+					</div>
+					<input type="password" name="password" placeholder="Enter your password" minlength="6">
+				  </div>
+				  <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
+					<label for="checkbox">
+					  <input type="checkbox" name="checkbox"> Stay signed in for a week
+					</label>
+				  </div>
+				  <div class="field padding-bottom--24">
+					<input style="background: #4d88ff;" href="#" type="submit" value="Login">
+				  </div>
+				  <div class="field">
+					<a class="ssolink" href="{% url 'register' %}">Don't Have an account? -Create an Account</a>
+				  </div>
+				</form>
+			  </div>
+			</div>
+			<div class="footer-link padding-top--24">
+			  
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </section>
+</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,153 @@
+{% extends 'adminhtml/index.html' %}
+{% load static %}
+
+
+
+{% block content %}
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<h1 class="h3 mb-3">Blank Page</h1>
+
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<a class="card-title btn btn-dark mb-0" href="{% url 'create_coupen' %}">Create Coupen</a>
+								</div>
+								<div class="row m-auto">
+									<div class="col col-sm-6 col-md-6  col-xs-6 col-lg-6 text-right ">
+									<div class="input-group rounded">
+										<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+										<span class="input-group-text border-0" id="search-addon">
+										  <i class="fas fa-search"></i>
+										</span>
+									  </div>
+									</div>
+                                <div class="col col-sm-6 col-md-4 col-xs-6 col-lg-4 text-right">
+                                    <div class="pagination">
+                                      <nav aria-label="Page navigation example">
+                                          <ul class="pagination justify-content-center">
+                                              {% if allcoupen.has_previous %}
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="?page=1" aria-label="First">
+                                                          <i class=" fa fa-angle-double-left"></i>
+                                                      </a>
+                                                  </li>
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="?page={{ allcoupen.previous_page_number }}" aria-label="Previous">
+                                                          <i class="fa fa-angle-left"></i>
+                                                      </a>
+                                                  </li>
+                                              {% endif %}
+                                              {% for page in allcoupen.paginator.page_range %}
+                                                  {% if allcoupen.number == page %}
+                                                      <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+                                                  {% elif page > allcoupen.number|add:'-3' and page < allcoupen.number|add:'3' %}
+                                                      <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                                                  {% endif %}
+                                              {% endfor %}
+                                              {% if allcoupen.has_next %}
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="?page={{ allcoupen.next_page_number }}" aria-label="Next">
+                                                          <i class="fa fa-angle-right"></i>
+                                                      </a>
+                                                  </li>
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="?page={{ allcoupen.paginator.num_pages }}" aria-label="Last">
+                                                          <i class="fa fa-angle-double-right"></i>
+                                                      </a>
+                                                  </li>
+                                              {% endif %}
+                                          </ul>
+                                      </nav>
+                                  </div>
+                              </div>
+							</div>
+								<div class="card-body">
+									<table class="table table-hover my-0">
+										<thead>
+											<tr>
+												<th>S/No</th>
+												<th class="d-none d-xl-table-cell">Code</th>
+												<th class="d-none d-xl-table-cell">valid From</th>
+												<th>Valid To</th>
+												<th class="d-none d-md-table-cell">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for c in allcoupen %}
+											<tr>
+												<td>{{forloop.counter}}</td>
+												<td class="d-none d-xl-table-cell">{{c.code}}</td>
+												<td class="d-none d-xl-table-cell"><span class="badge bg-success">{{c.valid_from}}</span></td>
+												<td><span class="badge bg-danger">{{c.valid_to}}</span></td>
+												<td class="d-none d-md-table-cell"><a href="{% url 'update_coupen' c.id %}" class="fa fa-pen"></a>&nbsp;&nbsp;&nbsp;<a href="{% url 'delete_coupen' c.id %}" class="fa fa-trash" style="color:red;"></a></td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			
+			{% endblock content %}
+
+
+
+			
+
+
+
+
+
+
+
+			{% comment %} <main class="content">
+				<div class="container-fluid p-0">   
+
+					<h1 class="h3 mb-3">Blank Page</h1>
+
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Empty card</h5>
+								</div>
+								<div class="card-body">
+									<table class="table table-hover my-0">
+										<thead>
+											<tr>
+												<th>Name</th>
+												<th class="d-none d-xl-table-cell">Start Date</th>
+												<th class="d-none d-xl-table-cell">End Date</th>
+												<th>Status</th>
+												<th class="d-none d-md-table-cell">Assignee</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for  in  %}
+											<tr>
+												<td>Project Apollo</td>
+												<td class="d-none d-xl-table-cell">01/01/2021</td>
+												<td class="d-none d-xl-table-cell">31/06/2021</td>
+												<td><span class="badge bg-success">Done</span></td>
+												<td class="d-none d-md-table-cell">Vanessa Tucker</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main> {% endcomment %}
+	
+

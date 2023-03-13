@@ -1,0 +1,77 @@
+{% extends 'flip/index.html' %}
+{% load static %}
+{% block sidebar %}{% endblock sidebar %}
+{% block content %}
+
+
+
+<section>
+	
+		
+		  <div class="box-root  padding-bottom--24 flex-flex flex-justifyContent--center">
+			
+		  </div>
+		  <div class="box-root flex-flex flex-justifyContent--center error">
+		  </div>
+		  <div class="formbg-outer">
+			<div class="formbg">
+				<div class="flex-flex flex-justifyContent--center">
+				<h4><a>User Registeration</a></h4>
+				</div>
+			  <div class="formbg-inner padding-horizontal--48">
+				<span class="padding-bottom--15">Register your account</span>
+                
+
+                {% if otp %}
+                <form action="{% url 'register' %}" method="POST" id="stripe-login">
+					{% csrf_token %}
+				  <div class="field padding-bottom--24">
+					<label for="otp">OTP</label>
+                    <input type="hidden" name="usr" value="{{usr.username}}" class="form-control" placeholder="otp" required="" autofocus="">
+					<input type="text" name="otp" placeholder="Enter OTP">
+				  </div>
+                  <div class="field padding-bottom--24">
+					<input style="background: #4d88ff;" href="#" type="submit" value="Verify">
+				  </div>
+                  <a href="{% url 'resend' usr.username %}" id="cancel_reset"><i class="fa fa-angle-right"></i> Resend</a>
+                </form>
+
+                {% else %}
+				<form action="{% url 'register' %}" method="POST" id="stripe-login">
+					{% csrf_token %}
+				  <div class="field padding-bottom--24">
+					<label for="name">Name</label>
+					<input type="text" name="name" placeholder="Enter Your Name">
+				  </div>
+                  <div class="field padding-bottom--24">
+					<label for="email">Email</label>
+					<input type="email" name="email" placeholder="Enter Email">
+				  </div>
+                  <div class="field padding-bottom--24">
+					<label for="password">Password</label>
+					<input type="password" name="password" placeholder="Enter Password">
+				  </div><div class="field padding-bottom--24">
+					<label for="password">Confirm Password</label>
+					<input type="password" name="confirmpass" placeholder="Confirm Password">
+				  </div>
+  
+				  
+				  <div class="field padding-bottom--24">
+					<input style="background: #4d88ff;" href="#" type="submit" value="Login">
+				  </div>
+				  <div class="field">
+					<a class="ssolink" href="{% url 'login' %}">Already Have a account? Login</a>
+				  </div>
+				</form>
+                {% endif %}
+			  </div>
+			</div>
+			<div class="footer-link padding-top--24">
+			  
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </section>
+{% endblock content %}

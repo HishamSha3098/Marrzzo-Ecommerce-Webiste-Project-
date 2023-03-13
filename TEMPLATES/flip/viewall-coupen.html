@@ -1,0 +1,122 @@
+{% extends 'flip/index.html' %}
+{% load static %}
+
+{% block category %}
+  <!-- ================================== TOP NAVIGATION ================================== -->
+  <div class="side-menu animate-dropdown outer-bottom-xs">
+    <div class="head"><i class="icon fa fa-align-justify fa-fw"></i> Account Settings</div>
+    <nav class="yamm megamenu-horizontal">
+      <ul class="nav">
+        
+        
+        
+          <!-- ================================== MEGAMENU VERTICAL ================================== -->
+          <ul class="dropdown-menu">
+            
+              <div class="row">
+               
+              </div>
+              <!-- /.row --> 
+            </li>
+            <!-- /.yamm-content -->
+          </ul>
+          <!-- /.dropdown-menu --> 
+          <!-- ================================== MEGAMENU VERTICAL ================================== --> </li>
+        <!-- /.menu-item -->
+        
+       
+        
+        <li> <a href="{% url 'userprofile'%}"><i class="icon fa fa-chevron-right"></i>Dashboard</a> </li>
+            <li> <a href="{% url 'editprofile' %}"><i class="icon fa fa-chevron-right"></i>Edit Profile</a> </li>
+                <li> <a href="{% url 'changepassword' %}"><i class="icon fa fa-chevron-right"></i>Change Password</a> 
+                <li> <a href="{% url 'viewall_coupen' %}"><i class="icon fa fa-chevron-right"></i>Available Coupen</a> 
+
+                    <li> <a href="{% url 'logout' %}"><i class="icon fa fa-power-off"></i>Logout</a> 
+          <!-- /.dropdown-menu --> </li>
+        <!-- /.menu-item -->
+       
+          
+          
+          
+        </ul>
+        <!-- /.nav --> 
+      </nav>
+      <!-- /.megamenu-horizontal --> 
+    </div>
+    <!-- /.side-menu --> 
+    <!-- ================================== TOP NAVIGATION : END ================================== --> 
+    {% endblock category %}
+
+{% block content %}
+
+<div class="container" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; background-color:white; overflow:scroll;">
+
+
+
+            <main class="col-md-9">
+
+                
+                <br/>
+                <h1> Available Coupens</h1>
+                <div class="card" >
+                  <div class="card-body">
+                    <table class="table table-borderless">
+                      <thead class="text-muted">
+                        <tr class="small text-uppercase">
+                          <th scope="col">S/No</th>
+                          <th scope="col">Code</th>
+                          <th scope="col">Discount</th>
+
+                          <th scope="col">Valid From</th>
+                          <th scope="col">Valid To</th>
+                          <th scope="col">Active</th>
+                         
+                        </tr>
+                      </thead>
+      
+                      <tbody>
+                        {% for item in allcoupen %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td><h5>{{ item.code }}</h5></td>
+                          <td>{{ item.discount }}</td>
+                          <td> {{ item.valid_from }}</td>
+                          <td> {{ item.valid_to }}</td>
+                          <td> {{ item.active }}</td>
+
+
+                          
+                        </tr>
+      
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                {% comment %} <div>
+                  <h2 class="text-center">Your order history is empty</h2>
+                  <div class="text-center">
+                    <a class="btn_1" href="{%url 'category'%}">Continue shopping..</a>
+                  </div>
+                </div>
+                {%endif%} {% endcomment %}
+                  
+            </main>
+            </div>
+            </div>
+        
+        </div> 
+
+       
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+      </div>
+{% endblock content %}
+
+
+

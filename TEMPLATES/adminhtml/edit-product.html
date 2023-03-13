@@ -1,0 +1,83 @@
+{% extends 'adminhtml/index.html' %}
+{% load static %}
+
+
+
+{% block content %}
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<h1 class="h3 mb-3">Category Managment</h1>
+
+					<div class="row">
+						<div class="col-6">
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0"> Add Category</h5>
+								</div>
+								<div class="card-body">
+									<form method="POST">
+										{% csrf_token %}
+										<!-- Name input -->
+										<div class="form-outline mb-4">
+										  <input type="text" name="name" value="{{product.name}}" id="form5Example1" placeholder="Enter Product Name" class="form-control" />
+										  {% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										</div>
+										<div class="form-outline mb-4">
+											<input type="text" name="price" value="{{product.price}}" id="form5Example1" placeholder="Enter price" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  <div class="form-outline mb-4">
+											<input type="text" name="discount" id="form5Example1" value="{{product.offer_price}}" placeholder="Enter Offer Price" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  <div class="form-outline mb-4">
+											<input type="text" name="quantity" id="form5Example1" value="{{product.quantity}}" placeholder="Enter quantity" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  <div class="form-outline mb-4">
+											<input type="text" name="brand" id="form5Example1" value="{{product.brand}}" placeholder="Enter Brand" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  <div class="form-outline mb-4">
+											<select name="category" class="form-control" required>
+												<option disabled selected>Choose Category</option>
+												{% for i in Category %}
+												<option value="{{i.id}}">{{i.name}}</option>
+												{% endfor %}
+									        </select>
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  
+										  
+										  <div class="form-outline mb-4">
+											<input type="text" name="desc" id="form5Example1" value="{{product.description}}" placeholder="Enter Discription" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  <div class="form-outline mb-4">
+											<input type="file" name="image1" id="form5Example1" placeholder="Choose Image" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  <div class="form-outline mb-4">
+											<input type="file" name="image2" id="form5Example1" placeholder="Choose Image" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  <div class="form-outline mb-4">
+											<input type="file" name="image3" id="form5Example1" placeholder="Choose Image" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+									  
+									
+										<!-- Submit button -->
+										<button type="submit" class="btn btn-dark btn-block mb-4">Update Product</button>
+									  </form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			
+			{% endblock content %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Live Chat</title>
+  </head>
+  <body>
+    <h1>Live Chat</h1>
+    <div id="chat-log"></div>
+    <form id="chat-form">
+      <input type="text" id="chat-message">
+      <button type="submit">Send</button>
+    </form>
+    <script>
+      var roomName = '{{ room_name }}';
+      var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/chat/' + roomName + '/');
+
+      chatSocket.onmessage = function(event) {
+        var message = JSON.parse(event.data);
+        var messageElement = document.createElement('div');
+        messageElement.innerText = message.message;
+        document.querySelector('#chat-log').appendChild(messageElement);
+      };
+
+      document.querySelector('#chat-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var messageInputDom = document.querySelector('#chat-message');
+        var message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+          'message': message
+        }));
+        messageInputDom.value = '';
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+{% extends 'flip/index.html' %}
+{% load static %}
+{% block sidebar %}{% endblock sidebar %}
+{% block content %}
+<div class="breadcrumb">
+	<div class="container">
+		<div class="breadcrumb-inner">
+			<ul class="list-inline list-unstyled">
+				<li><a href="#">Home</a></li>
+				<li class='active'>Checkout</li>
+			</ul>
+		</div><!-- /.breadcrumb-inner -->
+	</div><!-- /.container -->
+</div><!-- /.breadcrumb -->
+
+<div class="body-content">
+	<div class="container">
+		<div class="checkout-box ">
+			<div class="row">
+				<div class="col-xs-12 col-sm-9 col-md-9 rht-col">
+					<div class="panel-group checkout-steps" id="accordion">
+						<!-- checkout-step-01  -->
+<div class="panel panel-default checkout-step-01">
+
+	<!-- panel-heading -->
+		<div class="panel-heading">
+    	<h4 class="unicase-checkout-title">
+	        <a data-toggle="collapse" class="" data-parent="#accordion" href="#collapseOne">
+	          <span>1</span>DELIVERY ADDRESS
+	        </a>
+	     </h4>
+    </div>
+    <!-- panel-heading -->
+
+	<div id="collapseOne" class="panel-collapse collapse in">
+
+		<!-- panel-body  -->
+	    <div class="panel-body">
+			<div class="row" style="overflow-y : scroll; height:300px;">		
+
+				<!-- guest-login -->			
+				<form method="POST">
+					{% csrf_token %}
+					<input type="hidden" name="form_type" value="form2">
+				{% for x in Address %}
+				
+				<div class="col-sm-12 mt-4" style="padding: 10px;">
+					<input type="radio" name="ad" value="{{x.name}}-{{x.address}}-{{x.city}}-{{x.post_code}}-{{x.state}}-{{x.country}}-{{x.phone}}">
+				  <div class="card border-primary" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 0px 0px; ">
+					<div class="card-body d-flex ">
+						
+						
+						<h5>{{x.name}}</h5>
+					  <p class="card-text">
+						
+						{{x.address}}
+						 {{x.city}},{{x.post_code}}<br/>
+						 {{x.state}}<br/>
+						 {{x.country}}
+						 {{x.phone}}</p>
+					  {% comment %} <a href="" class="btn btn-primary">Edit</a> {% endcomment %}
+					</div>
+				  </div>
+				</div>
+				
+				{% endfor %}
+				
+				
+				 
+
+			</div>	
+			<br/>
+			<button type="submit" class="btn  btn-primary">choose</button>
+			
+			</form>		
+		</div>
+		<!-- panel-body  -->
+
+	</div><!-- row -->
+</div>
+<!-- checkout-step-01  -->
+					    <!-- checkout-step-02  -->
+					  	<div class="panel panel-default checkout-step-02">
+						    <div class="panel-heading">
+						      <h4 class="unicase-checkout-title">
+						        <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#collapseTwo">
+						          <span>2</span>Add Address
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="collapseTwo" class="panel-collapse collapse">
+						      <div class="panel-body">
+								<div class="row justify-content-center" style="margin-top:1%; margin-left:-1%"> 
+									<div class="col-md-12">
+										<form method="POST">
+											
+											{% csrf_token %}
+											<input type="hidden" name="form_type" value="form1">
+											<div class="form-row">
+												<div class="form-group col-md-4">
+													<label>Name</label>
+													{{ form.name }}
+												</div>
+												<div class="form-group col-md-4">
+													<label>Address</label>
+													{{ form.address }}
+												</div>
+												<div class="form-group col-md-4">
+													<label>Post code</label>
+													{{ form.post_code }}
+												</div>
+												<div class="form-group col-md-4">
+													<label>City</label>
+													{{ form.city }}
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group col-md-4">
+													<label>State</label>
+													{{ form.state }}
+												</div>
+												<div class="form-group col-md-4">
+													<label>Country</label>
+													{{ form.country }}
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group col-md-4">
+													<label>Phone</label>
+													{{ form.phone }}
+												</div>
+												<div class="form-group col-md-4">
+													<label>Order Note</label>
+													{{ form.order_note }}
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group col-md-6">
+													<input type="submit" value="Save Address" class="btn btn-primary">
+												</div>
+											</div>
+										</form>
+								</div>
+								</div>
+						      </div>
+						    </div>
+					  	</div>
+					  	<!-- checkout-step-02  -->
+
+						<!-- checkout-step-03  -->
+					  	<div class="panel panel-default checkout-step-03">
+						    <div class="panel-heading">
+						      <h4 class="unicase-checkout-title">
+						        <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#collapseThree">
+						       		<span>3</span>Order Summary
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="collapseThree" class="panel-collapse collapse">
+						      <div class="panel-body">
+								<div class="order_table table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Product</th>
+												<th>Image</th>
+												<th>Total</th>
+											</tr>
+										</thead>
+										{% for cart_item in cart_items %}
+										<tbody>
+											<tr>
+												<td><strong>{{ cart_item.product.name }}</strong>
+												  <br>
+
+												  
+
+												  {{cart_item.product.ram | capfirst}} : {{cart_item.product.storage | capfirst}}
+
+												  <br/>
+												  <p> Qty :{{ cart_item.quantity }} <br/> Brand :{{cart_item.product.brand}}</p></td>
+												<td class="product_thumb"><a href="{{cart_item.product.get_url}}"><img
+													src="{{ cart_item.product.image1.url }}" style="width: 60px;"
+													alt="img"></a>
+												</td>
+												<td><p class="mt-3"> ₹{{ cart_item.product.offer_price }}</p> </td>
+												
+											</tr>
+										</tbody>
+										{%endfor%}
+									</table>
+								</div>
+						      </div>
+						    </div>
+					  	</div>
+					  	<!-- checkout-step-03  -->
+
+						
+					  	
+					</div><!-- /.checkout-steps -->
+				</div>
+				<div class="col-xs-12 col-sm-3 col-md-3 sidebar">
+					<!-- checkout-progress-sidebar -->
+<div class="checkout-progress-sidebar ">
+	<div class="panel-group">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+		    	<h4 class="unicase-checkout-title">Payment</h4>
+		    </div>
+		    <div class="">
+				<ul class="nav nav-checkout-progress list-unstyled">
+					<li >Subtotal &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ₹{{total}}.00</li><br/>
+					<li>Tax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: N/A</li><br/>
+					{% if coupon %}
+					<li>Coupon &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $ {{coupon.discount}}</li><br/>
+					{% else %}
+					<li>Coupon &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Not Applied</li><br/>
+					{% endif %}
+					<li>Grand Total &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ₹{{discount}}</li>
+				</ul>	<br/>
+				<div class=""><img src="https://assets.stickpng.com/images/6220ac4b912013c51947f9c5.png" style="height:50%; width:100%;"></div><br/>
+				<p>Securely accept payments from your customers via 100+ payment modes. Get started instantly with the quick integration process and grow your business effortlessly!</p>
+				<br/>
+				<input type="hidden" class="order-number"  orderid="{{order}}"> 
+				<button type="submit" id="paywithrazorpay" class="btn ml-3 mb-3 col-11 btn-black" style="height: 40px; width:100%;">
+				<img src="https://dashboard.razorpay.com/img/logo_full.png" alt="RazorPay"  height="50%" width="50%" >
+										</button></form>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- checkout-progress-sidebar -->				</div>
+			</div><!-- /.row -->
+		</div><!-- /.checkout-box -->
+		
+	</div>
+
+{% endblock %}
+{% block script %}
+{% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script> {% endcomment %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+{% endblock script %}

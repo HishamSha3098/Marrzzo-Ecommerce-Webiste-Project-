@@ -1,0 +1,199 @@
+{% extends 'flip/index.html' %}
+{% load static %}
+
+{% block sidebar %}{% endblock sidebar %}
+
+{% block content %}
+<div class="container" style="overflow: scroll;">
+<div class="body-content outer-top-xs">
+  
+  <div class='row'>
+    <div class='col-xs-12 col-sm-12 col-md-12 sidebar'> 
+<div class="side-menu animate-dropdown outer-bottom-xs">
+
+
+<div class="head"><i class="icon fa fa-align-justify fa-fw"></i> Account Settings</div>
+<nav class="yamm megamenu-horizontal">
+  <ul class="nav">
+    
+    
+    
+    <ul class="dropdown-menu">
+                
+      {% comment %} <div class="row">
+       
+      </div> {% endcomment %}
+      <!-- /.row --> 
+    </li>
+    <!-- /.yamm-content -->
+  </ul>
+   
+    
+    <li> <a href="{% url 'userprofile'%}"><i class="icon fa fa-chevron-right"></i>Dashboard</a> </li>
+        <li> <a href="{% url 'editprofile' %}"><i class="icon fa fa-chevron-right"></i>Edit Profile</a> </li>
+            <li> <a href="{% url 'changepassword' %}"><i class="icon fa fa-chevron-right"></i>Change Password</a> 
+              <li> <a href="{% url 'viewall_coupen' %}"><i class="icon fa fa-chevron-right"></i>Available Coupen</a> 
+
+
+                <li> <a href="{% url 'logout' %}"><i class="icon fa fa-power-off"></i>Logout</a> 
+      <!-- /.dropdown-menu --> </li>
+    <!-- /.menu-item -->
+   
+      
+      
+      
+    </ul>
+    <!-- /.nav --> 
+  </nav>
+  <!-- /.megamenu-horizontal --> 
+</div>
+
+</div>
+          <div class="row">
+          <main class="col-xs-12 col-sm-12 col-md-8">
+
+                <div class="card" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; background-color:white;">
+                   
+                        <strong class="d-inline-block mr-4">
+                            Logged in as:
+                        </strong>
+                        <span>{{user.first_name}}</span>
+                    </header>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body"style="text-align:center">
+                                       <h5 class="card-title">
+                                            Item in Orders
+                                        </h5>
+                                        <!-- put order count from database-->
+                                       <h4>{{order_count}}</h4>
+                                        <a href="">View orders</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card"style="text-align:center">
+                                    <div class="card-body">
+                                       <img src="{{Userprofile.image.url}}" alt="User Profile Picture"width="100"height="100"style="border-radius:50%;">
+                                    <p class="mb-0">{{user.email}}</p>
+                                    <p>{{profileupdate.phone}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
+                 <div class="col-md-12" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; background-color:white;">
+  <h4>Order Details</h4>
+  <table class="table table-borderless">
+    <thead class="text-muted">
+      <tr class="small text-uppercase">
+        <th scope="col">Product</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in orderitem %}
+      <tr>
+        <td>
+          <figure class="itemside align-items-center">
+            <div class="how-itemcart1">
+              <img
+                src="{{ item.product.image1.url }} "
+                style="height: 100px"
+                alt="IMG"
+              />
+            </div>
+          </figure>
+        </td>
+        <td class="column">
+          <label class="my-3" for="">{{ item.quantity }}</label>
+        </td>
+        <td>
+          <div class="price-wrap">
+            <var class="price">₹ {% widthratio item.product.price 1 item.quantity%} </var><br />
+            <small class="text-muted">
+              ₹{{ item.product.price}} each
+            </small>
+          </div>
+          <!-- price-wrap .// -->
+        </td>
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <hr />
+  <div class="d-flex">
+    
+    <h5 class="d-flex align-end">
+      Grand Total : ₹{{ordernumber.order_total}}
+    </h5>
+    <br />
+   
+    {% if ordernumber.status == 'Cancelled' %}
+    <h6>
+      Order Status:
+      <span class="text-danger">{{ordernumber.status}}</span>
+    </h6>
+    <br />
+    {% elif ordernumber.status == 'Out for delivery' %}
+    <h6>
+      Order Status:
+      <span class="text-warning">{{ordernumber.status}}</span>
+    </h6>
+    <br />
+    {% else %}
+    <h6>
+      Order Status:
+      <span class="text-success">{{ordernumber.status}}</span>
+    </h6>
+    <br />
+    {% endif %}
+    <h6>Tracking Number : {{ordernumber.order_number}}</h6>
+    <br />
+  </div>
+  <div class="d-flex justify-content-end">
+    {% if orderitem.order.status != 'Cancelled' %}
+    <a href="{% url 'cancelorders' ordernumber.order_number %}"
+      ><button class="btn btn-danger">Cancel Order</button></a
+    >
+
+    {% endif %} 
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                {% comment %} <div>
+                  <h2 class="text-center">Your order history is empty</h2>
+                  <div class="text-center">
+                    <a class="btn_1" href="{%url 'category'%}">Continue shopping..</a>
+                  </div>
+                </div>
+                {%endif%} {% endcomment %}
+                  
+            </main>
+            </div>
+            </div>
+        
+        </div> 
+
+       
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+      </div>
+{% endblock content %}
+
+
+
