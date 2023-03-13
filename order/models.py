@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from product.models import Product
+from product.models import ProductVarient
 
 # Create your models here.
 class Payment(models.Model):
@@ -46,7 +46,7 @@ class Order(models.Model):
     order_discount = models.FloatField(default=0,null=True)
     
     status = models.CharField(max_length=50,choices=STATUS,default='Order Confirmed')
-    
+    # coupen = models.FloatField(default=0,null=True)
     is_ordered = models.BooleanField(default=False)
     is_returned = models.BooleanField(default=False)
     return_reason = models.CharField(max_length=50, blank=True)
@@ -69,7 +69,7 @@ class OrderProduct(models.Model) :
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='order_product')
 
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductVarient,on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     product_price = models.FloatField()
     grand_total = models.FloatField(null=True)

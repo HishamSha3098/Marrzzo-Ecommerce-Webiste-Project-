@@ -170,7 +170,7 @@
 										{% for cart_item in cart_items %}
 										<tbody>
 											<tr>
-												<td><strong>{{ cart_item.product.name }}</strong>
+												<td><strong>{{ cart_item.product.product.name }}</strong>
 												  <br>
 
 												  
@@ -178,12 +178,12 @@
 												  {{cart_item.product.ram | capfirst}} : {{cart_item.product.storage | capfirst}}
 
 												  <br/>
-												  <p> Qty :{{ cart_item.quantity }} <br/> Brand :{{cart_item.product.brand}}</p></td>
+												  <p> Qty :{{ cart_item.quantity }} <br/> Brand :{{cart_item.product.product.brand}}</p></td>
 												<td class="product_thumb"><a href="{{cart_item.product.get_url}}"><img
-													src="{{ cart_item.product.image1.url }}" style="width: 60px;"
+													src="{{ cart_item.product.product.image1.url }}" style="width: 60px;"
 													alt="img"></a>
 												</td>
-												<td><p class="mt-3"> ₹{{ cart_item.product.offer_price }}</p> </td>
+												<td><p class="mt-3"> ₹{{ cart_item.product.product.offer_price }}</p> </td>
 												
 											</tr>
 										</tbody>

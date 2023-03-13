@@ -32,7 +32,7 @@ class Product(models.Model):
     image3 = models.ImageField(upload_to='images/users/', default='images/users/pngwing.com_3.png')
     brand = models.CharField(null=True,max_length=100)
     
-    quantity = models.PositiveIntegerField()
+    
     Category = models.ForeignKey(category, null=True,on_delete=models.CASCADE)
 
     def __str__(self):
@@ -44,7 +44,11 @@ class ProductVarient(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     ram = models.ForeignKey(product_ram,default="Nothing to Show",null=True,on_delete=models.CASCADE)
     storage = models.ForeignKey(product_storage,default="Nothing to Show",null=True,on_delete=models.CASCADE)
+    stock = models.PositiveIntegerField(null=True)
 
+    def __str__(self):
+        return f"{self.product.name} ({self.ram} RAM, {self.storage} Storage) - Stock: {self.stock}"
+    
 class Wishlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -54,11 +58,10 @@ class Wishlist(models.Model):
 
 class Ad_to_cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductVarient, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-        return f"{self.user.username}'s cart item: {self.product.name} (quantity: {self.quantity})"
+    
 
 class Coupon(models.Model):
     code = models.CharField(max_length=50)

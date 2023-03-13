@@ -41,11 +41,11 @@
 					<td class="romove-item"><a href="{% url 'remove_from_cart' c.product.id %}" title="cancel" class="icon"><i class="fa fa-trash-o"></i></a></td>
 					<td class="cart-image">
 						<a class="entry-thumbnail" href="detail.html">
-						    <img src="{{c.product.image1.url}}" alt="">
+						    <img src="{{c.product.product.image1.url}}" alt="">
 						</a>
 					</td>
 					<td class="cart-product-name-info">
-						<h4 class='cart-product-description'><a href="detail.html">{{c.product.name}}</a></h4>
+						<h4 class='cart-product-description'><a href="detail.html">{{c.product.product.name}}</a></h4>
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="rating rateit-small"></div>
@@ -57,7 +57,11 @@
 							</div>
 						</div><!-- /.row -->
 						<div class="cart-product-info">
-											<span class="product-color">Brand:<span><strong>{{c.product.brand}}</strong></span></span>
+											<span class="product-color">Brand:<span><strong>{{c.product.product.brand|capfirst}}</strong></span></span><br>
+											<span class="product-color">RAM:<span><strong>{{c.product.ram|capfirst}}</strong></span></span><br>
+											<span class="product-color">Storage:<span><strong>{{c.product.storage|capfirst}}</strong></span></span>
+
+
 						</div>
 					</td>
 					

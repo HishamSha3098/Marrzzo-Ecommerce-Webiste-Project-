@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Product,category,Ad_to_cart,Wishlist,Coupon
+from .models import Product,category,Ad_to_cart,Wishlist,Coupon,ProductVarient
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
@@ -13,7 +13,7 @@ def product_list(request,id):
 
     if request.user.is_authenticated:
         cart_items = Ad_to_cart.objects.filter(user=request.user)
-        total = sum(item.product.offer_price * item.quantity for item in cart_items)
+        total = sum(item.product.product.offer_price * item.quantity for item in cart_items)
         item_count = cart_items.count()
 
     else :
@@ -47,20 +47,47 @@ def product_list(request,id):
     
 def product_detail(request,id):
     if request.user.is_authenticated:
+        
         cart = Ad_to_cart.objects.filter(user=request.user)  
         item_count = cart.count()
+        
         cart_items = Ad_to_cart.objects.filter(user=request.user)
-        total = sum(item.product.offer_price * item.quantity for item in cart_items)
+        total = sum(item.product.product.offer_price * item.quantity for item in cart_items)
     product = Product.objects.get(id=id)
-    
+    productvarient = ProductVarient.objects.filter(product=product)
+    print(productvarient,"this product varienttt")
+    ram = ProductVarient.objects.filter(product=product).values('ram__ram').distinct()
+    print(ram,"this is ram")
+    storage = ProductVarient.objects.filter(product=product).values('storage__storage').distinct()
+    print(storage,"this is storage")
+    context ={
+        'ram':ram,
+        'storage':storage,
+        'cart':cart,
+        'item_count':item_count,
+        'total':total,
+        'product' :product,
+        'productvarient' :productvarient
+
+    }
     # Add variation logic here
-    return render(request, 'flip/detail.html', locals())
+    return render(request, 'flip/detail.html',context)
 @login_required(login_url='login')
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
+        print(product_id,"this is product id first")
+        products=Product.objects.get(id=product_id)
         quantity = request.POST.get('quantity', 1)
-        product = Product.objects.get(id=product_id)
+        ram = request.POST.get('ram')
+        storage = request.POST.get('stor')
+        # print(product_id,"this is product id")
+        print(quantity,"this is quantity -------------")
+        print(ram,"this is ram")
+        print(storage,"this is storage")
+        product = ProductVarient.objects.get(product=products,ram__ram=ram,storage__storage=storage)
+        print(product,"this is cart productt-----------")
+        print(product,"this is 8th product")
         cart_item, created = Ad_to_cart.objects.get_or_create(
             user=request.user, product=product)
         cart_item.quantity = int(quantity)
@@ -75,7 +102,7 @@ def update_cart(request) :
         quantity = request.POST.get('quantity',{})
 
 
-        cart_item = Ad_to_cart.objects.get(user=request.user,product=product_id)
+        cart_item = Ad_to_cart.objects.get(user=request.user)
         cart_item.quantity = int(quantity)
         cart_item.save()
         return redirect('cart')
@@ -85,7 +112,7 @@ def cart(request):
     cart_items = Ad_to_cart.objects.filter(user=request.user)
     item_count = cart_items.count()
     # single_item = get_object_or_404(Ad_to_cart, id=request.product_id)
-    total = sum(item.product.offer_price * item.quantity for item in cart_items)
+    total = sum(item.product.product.offer_price * item.quantity for item in cart_items)
     form = CouponForm
     coupon_id = request.session.get('coupon_id')
     if coupon_id:
@@ -98,7 +125,7 @@ def cart(request):
 
 def remove_from_cart(request, product_id):
     
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(ProductVarient, id=product_id)
     Ad_to_cart.objects.filter(user=request.user, product=product).delete()
     messages.success(request, f'{product.name} was removed from your Cart.')
     return redirect('cart')

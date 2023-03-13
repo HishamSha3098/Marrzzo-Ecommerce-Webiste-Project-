@@ -105,7 +105,7 @@
           <figure class="itemside align-items-center">
             <div class="how-itemcart1">
               <img
-                src="{{ item.product.image1.url }} "
+                src="{{ item.product.product.image1.url }} "
                 style="height: 100px"
                 alt="IMG"
               />
@@ -117,9 +117,9 @@
         </td>
         <td>
           <div class="price-wrap">
-            <var class="price">₹ {% widthratio item.product.price 1 item.quantity%} </var><br />
+            <var class="price">₹ {% widthratio item.product.product.offer_price 1 item.quantity%} </var><br />
             <small class="text-muted">
-              ₹{{ item.product.price}} each
+              ₹{{ item.product.product.offer_price}} each
             </small>
           </div>
           <!-- price-wrap .// -->

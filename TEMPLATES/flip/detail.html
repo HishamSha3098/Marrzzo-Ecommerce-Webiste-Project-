@@ -126,8 +126,27 @@
 											<span class="price">${{product.offer_price}}</span>
 											<span class="price-strike">${{product.price}}</span>
 										</div>
-									</div>
+										<form method="POST" action="{% url 'add_to_cart' %}">
+											{% csrf_token %}
+										<select name="ram" class="form-select" aria-label="Default select example">
+											<option selected>Choose</option>
+											{% for r in ram %}
+											<option value="{{r.ram__ram}}">{{r.ram__ram}}</option>
+											
 
+											{% endfor %}
+										  </select>
+										  <select name="stor" class="form-select" aria-label="Default select example">
+											<option selected>Choose</option>
+											{% for s in storage %}
+											
+
+											<option value="{{s.storage__storage}}">{{s.storage__storage}}</option>
+											
+											{% endfor %}
+										  </select>
+									</div>
+									<input type="hidden" name="product_id" value="{{product.id}}">
 									<div class="col-sm-6 col-xs-6">
 										<div class="favorite-button m-t-5">
 											<a class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Wishlist" href="{% url 'add_to_wishlist' product.id %}">
@@ -154,9 +173,8 @@
 								                  <div class="arrow plus gradient"><span class="ir"><i class="icon fa fa-sort-asc"></i></span></div>
 								                  <div class="arrow minus gradient"><span class="ir"><i class="icon fa fa-sort-desc"></i></span></div>
 								                </div>
-								                <form method="POST" action="{% url 'add_to_cart' %}">
-													{% csrf_token %}
-													<input type="hidden" name="product_id" value="{{ product.id }}">
+								                
+													
 													<input type="number" name="quantity" value="1">
 							              </div>
 							            </div>

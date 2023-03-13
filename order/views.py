@@ -1,12 +1,12 @@
 from django.shortcuts import render,redirect,HttpResponse
 from .models import Order,OrderProduct,Payment
 import datetime
-from product.models import Coupon,Ad_to_cart
+from product.models import Coupon,Ad_to_cart,Product,ProductVarient
 from app1.models import Address
 from app1.forms import OrderForm
 from django.contrib import messages
 from django.http import JsonResponse
-from product.models import Product
+
 from django.core.mail import send_mail
 from django.conf import settings
 import razorpay
@@ -22,7 +22,7 @@ def order(request) :
     coupon=0
     current_user = request.user
     cart_items = Ad_to_cart.objects.filter(user=current_user)
-    total = sum(item.product.offer_price * item.quantity for item in cart_items)
+    total = sum(item.product.product.offer_price * item.quantity for item in cart_items)
     coupon_id = request.session.get('coupon_id')
     if coupon_id:
         coupon = Coupon.objects.get(id=coupon_id)
@@ -110,7 +110,7 @@ def razorpaycheck(request) :
     print("im in raxor")
     current_user = request.user
     cart_items = Ad_to_cart.objects.filter(user=current_user)
-    total = sum(item.product.offer_price * item.quantity for item in cart_items)
+    total = sum(item.product.product.offer_price * item.quantity for item in cart_items)
     coupon_id = request.session.get('coupon_id')
     if coupon_id:
         coupon = Coupon.objects.get(id=coupon_id)
@@ -171,28 +171,28 @@ def place_order(request):
                 payment = payment,
                 product = item.product,
                 quantity = item.quantity,
-                product_price = item.product.offer_price,
+                product_price = item.product.product.offer_price,
                 grand_total = payment.amount_paid
 
     
         )
 
-        orderproduct = Product.objects.filter(id=item.product_id).first()
-        orderproduct.quantity = orderproduct.quantity - item.quantity
+        orderproduct = ProductVarient.objects.filter(id=item.product_id).first()
+        orderproduct.stock = orderproduct.stock - item.quantity
         orderproduct.save()
     
     Ad_to_cart.objects.filter(user=current_user).delete()
 
     print("cart deleted")
     messages.success(request,"your order has placed")
-    mess=f'Hello\t{current_user.first_name},\nYour Order has been Placed,Thanks for shopping with us\nThanks!'
-    send_mail(
-                     "Marrazzo - Order Placed",
-                     mess,
-                     settings.EMAIL_HOST_USER,
-                     [current_user.email],
-                     fail_silently = False
-                     )
+    # mess=f'Hello\t{current_user.first_name},\nYour Order has been Placed,Thanks for shopping with us\nThanks!'
+    # send_mail(
+    #                  "Marrazzo - Order Placed",
+    #                  mess,
+    #                  settings.EMAIL_HOST_USER,
+    #                  [current_user.email],
+    #                  fail_silently = False
+    #                  )
     if 'coupon_id' in request.session:
             del request.session['coupon_id']
 
@@ -259,14 +259,14 @@ def cancel_order(request,order_number) :
             Order.objects.filter(user=current_user,order_number=order_number).update(status='Cancelled')
 
 
-            mess=f'Hello\t{current_user.first_name},\nYour Product has been canceled,Money will be refunded with in 1 hour\nThanks!'
-            send_mail(
-                            "Marrazzo - Cancel Product",
-                            mess,
-                            settings.EMAIL_HOST_USER,
-                            [current_user.email],
-                            fail_silently = False
-                            )
+            # mess=f'Hello\t{current_user.first_name},\nYour Product has been canceled,Money will be refunded with in 1 hour\nThanks!'
+            # send_mail(
+            #                 "Marrazzo - Cancel Product",
+            #                 mess,
+            #                 settings.EMAIL_HOST_USER,
+            #                 [current_user.email],
+            #                 fail_silently = False
+            #                 )
         else :
             pass
 
