@@ -31,8 +31,7 @@ class Product(models.Model):
     image2 = models.ImageField(upload_to='images/users/', default='images/users/pngwing.com_3.png')
     image3 = models.ImageField(upload_to='images/users/', default='images/users/pngwing.com_3.png')
     brand = models.CharField(null=True,max_length=100)
-    storage = models.ForeignKey(product_storage,null=True,on_delete=models.CASCADE)
-    ram = models.ForeignKey(product_ram,null=True,on_delete=models.CASCADE)
+    
     quantity = models.PositiveIntegerField()
     Category = models.ForeignKey(category, null=True,on_delete=models.CASCADE)
 
@@ -40,6 +39,12 @@ class Product(models.Model):
         return self.name
     # Add other fields as necessary
     
+
+class ProductVarient(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    ram = models.ForeignKey(product_ram,default="Nothing to Show",null=True,on_delete=models.CASCADE)
+    storage = models.ForeignKey(product_storage,default="Nothing to Show",null=True,on_delete=models.CASCADE)
+
 class Wishlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
