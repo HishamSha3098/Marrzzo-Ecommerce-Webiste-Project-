@@ -11,6 +11,7 @@ from .forms import AddCoupen
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.db.models import Q
 
 # Create your views here.
 
@@ -70,8 +71,18 @@ def add_category(request):
     return render(request, 'adminhtml/Add-category.html', locals())
 
 def view_category(request):
-   Category= category.objects.all()
-   return render(request,'adminhtml/view-category.html',locals())
+    Category= category.objects.all()
+    paginator = Paginator(Category, 2) # divide the data into pages of 10 items each
+    page_number = request.GET.get('page') # get the current page number from the URL query string
+   
+    if request.method == 'POST' :
+        search = request.POST['search']
+        
+        allcategory =  category.objects.order_by('id').filter(Q(name__icontains=search))
+
+    else :
+         allcategory = paginator.get_page(page_number)
+    return render(request,'adminhtml/view-category.html',locals())
 
 
 def edit_category(request,pid):
@@ -132,6 +143,16 @@ def add_product(request):
 
 def view_product(request):
     product = Product.objects.all()
+    paginator = Paginator(product, 4) # divide the data into pages of 10 items each
+    page_number = request.GET.get('page') # get the current page number from the URL query string
+   
+    if request.method == 'POST' :
+        search = request.POST['search']
+        
+        allproduct =  Product.objects.order_by('id').filter(Q(name__icontains=search)|Q(offer_price__icontains=search)|Q(quantity__icontains=search))
+
+    else :
+         allproduct = paginator.get_page(page_number)
     return render(request, 'adminhtml/product-view.html', locals())
 
 
@@ -191,7 +212,16 @@ def adminLogin(request):
 
 def user_manage(request):
     users = User.objects.all()
+    paginator = Paginator(users, 2) # divide the data into pages of 10 items each
+    page_number = request.GET.get('page') # get the current page number from the URL query string
+   
+    if request.method == 'POST' :
+        search = request.POST['search']
+        
+        allusers =  User.objects.order_by('id').filter(Q(first_name__icontains=search)|Q(email__icontains=search))
 
+    else :
+         allusers = paginator.get_page(page_number)
     return render(request,'adminhtml/user-manage.html',locals())
 
 
@@ -211,8 +241,15 @@ def order_view(request) :
     order= Order.objects.all()
     paginator = Paginator(order, 4) # divide the data into pages of 10 items each
     page_number = request.GET.get('page') # get the current page number from the URL query string
-    allorder = paginator.get_page(page_number)
-    return render(request,'adminhtml/order-view.html',locals())
+   
+    if request.method == 'POST' :
+        search = request.POST['search']
+        
+        allorder =  Order.objects.order_by('id').filter(Q(first_name__icontains=search)|Q(order_number__icontains=search)|Q(status__icontains=search))
+
+    else :
+         allorder = paginator.get_page(page_number)
+    return render(request,'adminhtml/order-view.html',{"allorder" :allorder})
 
 def update_order_status(request, order_id):
     # get the order instance
@@ -245,7 +282,13 @@ def view_coupen(request) :
     allcoupen=Coupon.objects.all()
     paginator = Paginator(allcoupen, 1) # divide the data into pages of 10 items each
     page_number = request.GET.get('page') # get the current page number from the URL query string
-    allcoupen = paginator.get_page(page_number)
+   
+    if request.method == 'POST' :
+        search = request.POST['search']
+        allcoupen =  Coupon.objects.order_by('id').filter(Q(code__icontains=search)|Q(discount__icontains=search))
+
+    else :
+        allcoupen = paginator.get_page(page_number)
 
     return render(request,'adminhtml/coupen-view.html',locals())
 

@@ -16,12 +16,16 @@
 									<p class="card-title mb-0">Order List</p>
 								</div>
 								<div class="row m-auto">
+									
 									<div class="col col-sm-6 col-md-6  col-xs-6 col-lg-6 text-right ">
+										<form method="POST">
+											{% csrf_token %}
 									<div class="input-group rounded">
-										<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-										<span class="input-group-text border-0" id="search-addon">
+										
+										<input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+										<button type="submit" <span class="input-group-text border-0" id="search-addon">
 										  <i class="fas fa-search"></i>
-										</span>
+										</span></button>
 									  </div>
 									</div>
                                 <div class="col col-sm-6 col-md-4 col-xs-6 col-lg-4 text-right">

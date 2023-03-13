@@ -15,6 +15,59 @@
 								<div class="card-header">
 									<a class="card-title btn btn-dark mb-0" href="{% url 'add_product' %}">Add Product</a>
 								</div>
+								<div class="row m-auto">
+									
+									<div class="col col-sm-6 col-md-6  col-xs-6 col-lg-6 text-right ">
+										<form method="POST">
+											{% csrf_token %}
+									<div class="input-group rounded">
+										
+										<input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+										<button type="submit" <span class="input-group-text border-0" id="search-addon">
+										  <i class="fas fa-search"></i>
+										</span></button>
+									  </div>
+									</div>
+                                <div class="col col-sm-6 col-md-4 col-xs-6 col-lg-4 text-right">
+                                    <div class="pagination">
+                                      <nav aria-label="Page navigation example">
+                                          <ul class="pagination justify-content-center">
+                                              {% if allproduct.has_previous %}
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="?page=1" aria-label="First">
+                                                          <i class=" fa fa-angle-double-left"></i>
+                                                      </a>
+                                                  </li>
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="?page={{ allproduct.previous_page_number }}" aria-label="Previous">
+                                                          <i class="fa fa-angle-left"></i>
+                                                      </a>
+                                                  </li>
+                                              {% endif %}
+                                              {% for page in allproduct.paginator.page_range %}
+                                                  {% if allusers.number == page %}
+                                                      <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+                                                  {% elif page > allproduct.number|add:'-3' and page < allproduct.number|add:'3' %}
+                                                      <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                                                  {% endif %}
+                                              {% endfor %}
+                                              {% if allproduct.has_next %}
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="?page={{ allproduct.next_page_number }}" aria-label="Next">
+                                                          <i class="fa fa-angle-right"></i>
+                                                      </a>
+                                                  </li>
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="?page={{ allproduct.paginator.num_pages }}" aria-label="Last">
+                                                          <i class="fa fa-angle-double-right"></i>
+                                                      </a>
+                                                  </li>
+                                              {% endif %}
+                                          </ul>
+                                      </nav>
+                                  </div>
+                              </div>
+							</div>
 								<div class="card-body">
 									<table class="table table-hover my-0">
 										<thead>
@@ -28,7 +81,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											{% for p in product %}
+											{% for p in allproduct %}
 											<tr>
 												<td>{{forloop.counter}}</td>
 												<td><img src="{{p.image1.url}}" style="width:100px;"></td>
