@@ -103,14 +103,14 @@ def update_cart(request) :
         quantity = request.POST.get('quantity',{})
 
 
-        cart_item = Ad_to_cart.objects.get(user=request.user)
+        cart_item = Ad_to_cart.objects.get(user=request.user,product_id=product_id)
         cart_item.quantity = int(quantity)
         cart_item.save()
         return redirect('cart')
 
 @login_required(login_url='login')
 def cart(request):
-    cart_items = Ad_to_cart.objects.filter(user=request.user)
+    cart_items = Ad_to_cart.objects.filter(user=request.user).order_by('-id')
     item_count = cart_items.count()
     # single_item = get_object_or_404(Ad_to_cart, id=request.product_id)
     total = sum(item.product.product.offer_price * item.quantity for item in cart_items)

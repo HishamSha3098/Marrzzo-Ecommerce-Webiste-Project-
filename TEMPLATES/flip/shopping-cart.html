@@ -77,8 +77,8 @@
 									<input type="number" name="quantity" value="{{c.quantity}}">
 			              </div>
 		            </td>
-					<td class="cart-product-sub-total"><span class="cart-sub-total-price">{{c.product.offer_price}}</span></td>
-					<td class="cart-product-grand-total"><span class="cart-grand-total-price">{% widthratio c.product.offer_price 1 c.quantity%}</span></td>
+					<td class="cart-product-sub-total"><span class="cart-sub-total-price">{{c.product.product.offer_price}}</span></td>
+					<td class="cart-product-grand-total"><span class="cart-grand-total-price">{% widthratio c.product.product.offer_price 1 c.quantity%}</span></td>
 					<td class="update-item"><button type="submit"  class="btn btn-upper btn-primary pull-right outer-right-xs">Update</button></td>
 				</tr>
 				
