@@ -41,7 +41,7 @@ def home(request) :
     
     if request.user.is_authenticated:
         cart_items = Ad_to_cart.objects.filter(user=request.user)
-        total = sum(item.product.offer_price * item.quantity for item in cart_items)
+        total = sum(item.product.product.offer_price * item.quantity for item in cart_items)
         cart = Ad_to_cart.objects.filter(user=request.user)  
         item_count = cart.count()
         print('helow its me')

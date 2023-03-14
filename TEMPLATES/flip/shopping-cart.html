@@ -222,4 +222,26 @@
 	</table><!-- /table -->
 </div><!-- /.cart-shopping-total -->			</div><!-- /.shopping-cart -->
 		</div> <!-- /.row --></div>
+
+		
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if message %}
+<script>
+
+	Swal.fire({
+		icon: 'error',
+		title: 'Oops...',
+		text: 'Selected Varient Not Available,Choose another one!',
+		
+	  }).then((value)=> {
+		
+		window.location.href="/product_view/" + ordernumber + "/";
+
+							  
+								
+		 }
+					   
+		);
+</script>
+{% endif %} {% endcomment %}
     {% endblock content %}

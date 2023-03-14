@@ -121,14 +121,14 @@
 								<div class="row">
 									
 
-									<div class="col-sm-6 col-xs-6">
+									<div class="col-sm-6 col-xs-6" id="renderdiv">
 										<div class="price-box">
 											<span class="price">${{product.offer_price}}</span>
 											<span class="price-strike">${{product.price}}</span>
 										</div>
 										<form method="POST" action="{% url 'add_to_cart' %}">
 											{% csrf_token %}
-										<select name="ram" class="form-select" aria-label="Default select example">
+										<select name="ram" id="ram-dropdown" class="form-select" aria-label="Default select example">
 											<option selected>Choose</option>
 											{% for r in ram %}
 											<option value="{{r.ram__ram}}">{{r.ram__ram}}</option>
@@ -136,15 +136,9 @@
 
 											{% endfor %}
 										  </select>
-										  <select name="stor" class="form-select" aria-label="Default select example">
-											<option selected>Choose</option>
-											{% for s in storage %}
-											
-
-											<option value="{{s.storage__storage}}">{{s.storage__storage}}</option>
-											
-											{% endfor %}
+										  <select id="storage_calling">
 										  </select>
+										 
 									</div>
 									<input type="hidden" name="product_id" value="{{product.id}}">
 									<div class="col-sm-6 col-xs-6">
@@ -778,6 +772,29 @@
 </div><!-- /.body-content -->
 </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#ram-dropdown').change(function() {  // detect change in dropdown value
+        var selectedRam = $(this).val();
+		var productid = {{product.id}};   // get selected RAM value
+        $.ajax({
+            type: "POST",                  // use POST method to send data
+            url: "/product/product_view/"+ productid + "/",    // replace with your Django view URL
+            data: {'selected_ram': selectedRam,'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()},  // send selected RAM value as data
+            success: function(response) {
+                console.log(response.data)
+				$("#storage_calling").html(response.data)
+                    // handle server response
+				    // handle server response
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);  // handle errors
+            }
+        });
+    });
+});
+</script>
 
 {% endblock content %}
 		

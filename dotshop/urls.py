@@ -21,7 +21,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app1.urls')),
-    path('', include('product.urls')),
+    path('product/', include('product.urls')),
     path('order/', include('order.urls')),
     path('Adminpanel/', include('Adminpanel.urls'))
 

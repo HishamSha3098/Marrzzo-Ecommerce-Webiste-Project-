@@ -6,7 +6,7 @@ from django.utils import timezone
 from .forms import CouponForm
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-
+from django.template.loader import render_to_string
 
 
 def product_list(request,id):
@@ -55,43 +55,44 @@ def product_detail(request,id):
         total = sum(item.product.product.offer_price * item.quantity for item in cart_items)
     product = Product.objects.get(id=id)
     productvarient = ProductVarient.objects.filter(product=product)
-    print(productvarient,"this product varienttt")
+    
     ram = ProductVarient.objects.filter(product=product).values('ram__ram').distinct()
-    print(ram,"this is ram")
-    storage = ProductVarient.objects.filter(product=product).values('storage__storage').distinct()
-    print(storage,"this is storage")
-    context ={
-        'ram':ram,
-        'storage':storage,
-        'cart':cart,
-        'item_count':item_count,
-        'total':total,
-        'product' :product,
-        'productvarient' :productvarient
+    if request.method == 'POST':
+        selected_ram = request.POST.get('selected_ram')
+        print(selected_ram,"this is selected ram====------------------")
+        storage = ProductVarient.objects.filter(product=product,ram__ram=selected_ram).values('storage__storage').distinct()
+        print(storage,"this is dtorage-------------------------------")
+        
+        
+        t= render_to_string('flip/storage-ajax.html',{'storage':storage})
+        return JsonResponse({'data':t})
+    
+    
 
-    }
+    
     # Add variation logic here
-    return render(request, 'flip/detail.html',context)
+    return render(request, 'flip/detail.html',locals())
 @login_required(login_url='login')
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
-        print(product_id,"this is product id first")
+        
         products=Product.objects.get(id=product_id)
         quantity = request.POST.get('quantity', 1)
         ram = request.POST.get('ram')
         storage = request.POST.get('stor')
         # print(product_id,"this is product id")
-        print(quantity,"this is quantity -------------")
-        print(ram,"this is ram")
-        print(storage,"this is storage")
-        product = ProductVarient.objects.get(product=products,ram__ram=ram,storage__storage=storage)
-        print(product,"this is cart productt-----------")
-        print(product,"this is 8th product")
-        cart_item, created = Ad_to_cart.objects.get_or_create(
-            user=request.user, product=product)
-        cart_item.quantity = int(quantity)
-        cart_item.save()
+        
+        try :
+            product = ProductVarient.objects.get(product=products,ram__ram=ram,storage__storage=storage)
+            
+            cart_item, created = Ad_to_cart.objects.get_or_create(
+                user=request.user, product=product)
+            cart_item.quantity = int(quantity)
+            cart_item.save()
+        except :
+            message = "no varient available"
+            return render(request, 'flip/shopping-cart.html',{'message':message})
         # messages.success(request, f'{product.name} was added to your cart.')
         return redirect('cart')
     else:
@@ -127,7 +128,7 @@ def remove_from_cart(request, product_id):
     
     product = get_object_or_404(ProductVarient, id=product_id)
     Ad_to_cart.objects.filter(user=request.user, product=product).delete()
-    messages.success(request, f'{product.name} was removed from your Cart.')
+    messages.success(request, f'{product.product.name} was removed from your Cart.')
     return redirect('cart')
 
 def add_to_wishlist(request, product_id):
