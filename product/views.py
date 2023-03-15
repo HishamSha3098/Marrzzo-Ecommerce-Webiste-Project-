@@ -22,13 +22,13 @@ def product_list(request,id):
         item_count=0
     if id ==0 :
         product = Product.objects.all()
-        paginator = Paginator(product, 2) # divide the data into pages of 10 items each
+        paginator = Paginator(product, 4) # divide the data into pages of 10 items each
         page_number = request.GET.get('page') # get the current page number from the URL query string
         products = paginator.get_page(page_number)
     else :
         Category = category.objects.get(id=id)
         product = Product.objects.filter(Category=Category)
-        paginator = Paginator(product,1)
+        paginator = Paginator(product,3)
         page_number = request.GET.get('page')
         products = paginator.get_page(page_number)
     allcategory = category.objects.all()

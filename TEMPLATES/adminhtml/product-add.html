@@ -31,10 +31,7 @@
 											<input type="text" name="discount" id="form5Example1" placeholder="Enter Offer Price" class="form-control" />
 											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
 										  </div>
-										  <div class="form-outline mb-4">
-											<input type="text" name="quantity" id="form5Example1" placeholder="Enter quantity" class="form-control" />
-											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
-										  </div>
+										  
 										  <div class="form-outline mb-4">
 											<input type="text" name="brand" id="form5Example1" placeholder="Enter Brand" class="form-control" />
 											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
@@ -48,24 +45,7 @@
 									        </select>
 											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
 										  </div>
-										  <div class="form-outline mb-4">
-											<select name="ram" class="form-control" required>
-												<option disabled selected>Choose RAM</option>
-												{% for i in ram %}
-												<option value="{{i.id}}">{{i.ram}}</option>
-												{% endfor %}
-									        </select>
-											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
-										  </div>
-										  <div class="form-outline mb-4">
-											<select name="storage" class="form-control" required>
-												<option disabled selected>Choose Storage</option>
-												{% for s in storage %}
-												<option value="{{s.id}}">{{s.storage}}</option>
-												{% endfor %}
-									        </select>
-											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
-										  </div>
+										  
 										  
 										  <div class="form-outline mb-4">
 											<input type="text" name="desc" id="form5Example1" placeholder="Enter Discription" class="form-control" />

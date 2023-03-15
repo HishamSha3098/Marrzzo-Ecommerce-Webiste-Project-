@@ -38,19 +38,10 @@ from django.db.models import Q
 # @login_required(login_url='login')
 
 def home(request) :
-    
-    if request.user.is_authenticated:
-        cart_items = Ad_to_cart.objects.filter(user=request.user)
-        total = sum(item.product.product.offer_price * item.quantity for item in cart_items)
-        cart = Ad_to_cart.objects.filter(user=request.user)  
-        item_count = cart.count()
-        print('helow its me')
-        print(item_count)
-        allcategory = category.objects.all()
-        return render(request,"flip/index.html",locals())
-    else :
-        allcategory = category.objects.all()
-        return render(request,"flip/index.html",locals())
+    user = request.user
+    new_products = Product.objects.all()
+    allcategory = category.objects.all()
+    return render(request,"flip/index.html",locals())
     
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)
 def register(request):
@@ -161,6 +152,7 @@ def login(request) :
                      return redirect(login)
        else :   
               return render(request,"flip/sign-in.html")
+
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)
 @login_required(login_url='login')
 def logout(request) :

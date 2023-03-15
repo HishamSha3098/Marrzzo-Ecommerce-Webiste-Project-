@@ -1,0 +1,73 @@
+{% extends 'adminhtml/index.html' %}
+{% load static %}
+
+
+
+{% block content %}
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<h1 class="h3 mb-3">Product Managment</h1>
+
+					<div class="row">
+						<div class="col-6">
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0"> Add Product Varient</h5>
+								</div>
+								<div class="card-body">
+									<form method="POST">
+										{% csrf_token %}
+										<!-- Name input -->
+										
+										  
+										  
+										  <div class="form-outline mb-4">
+											<select name="product_id" class="form-control" required>
+												<option disabled selected>Choose Product</option>
+												{% for i in products %}
+												<option value="{{i.id}}">{{i.name}}</option>
+												{% endfor %}
+									        </select>
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+                                          <div class="form-outline mb-4">
+											<select name="ram_id" class="form-control" required>
+												<option disabled selected>Choose RAM</option>
+												{% for i in rams %}
+												<option value="{{i.id}}">{{i.ram}}</option>
+												{% endfor %}
+									        </select>
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+                                          <div class="form-outline mb-4">
+											<select name="storage_id" class="form-control" required>
+												<option disabled selected>Choose Storage</option>
+												{% for i in storages %}
+												<option value="{{i.id}}">{{i.storage}}</option>
+												{% endfor %}
+									        </select>
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										  
+										  
+										  <div class="form-outline mb-4">
+											<input type="text" name="stock" id="form5Example1" placeholder="Enter Stock" class="form-control" />
+											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
+										  </div>
+										 
+									  
+									
+										<!-- Submit button -->
+										<button type="submit" class="btn btn-dark btn-block mb-4">Add Product</button>
+									  </form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			
+			{% endblock content %}

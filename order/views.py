@@ -225,7 +225,7 @@ def invoice(request,order_number) :
     return render(request,'flip/invoice.html',locals())
 
 def cancel_order(request,order_number) :
-
+    o_number = order_number
     client = razorpay.Client(auth=("rzp_test_wDSZWwmcRov4vw", "9oAya7f4mhQbmmJ2d67bCrkX"))
     order = Order.objects.get(order_number=order_number)
     payment_id = order.Payment_id
@@ -238,8 +238,6 @@ def cancel_order(request,order_number) :
         }
     
     captured_payment = client.payment.capture(payment_id,amount)
-
-    
 
     if captured_payment['status'] == 'captured':
 
@@ -257,7 +255,7 @@ def cancel_order(request,order_number) :
         if refund is not None:
             current_user=request.user
             Order.objects.filter(user=current_user,order_number=order_number).update(status='Cancelled')
-
+            return render(request,'flip/order-canceled.html',{'ordernumber':o_number})
 
             # mess=f'Hello\t{current_user.first_name},\nYour Product has been canceled,Money will be refunded with in 1 hour\nThanks!'
             # send_mail(
