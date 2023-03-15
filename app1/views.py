@@ -39,7 +39,7 @@ from django.db.models import Q
 
 def home(request) :
     user = request.user
-    new_products = Product.objects.all()
+    new_products = Product.objects.all()[:5]
     allcategory = category.objects.all()
     return render(request,"flip/index.html",locals())
     
