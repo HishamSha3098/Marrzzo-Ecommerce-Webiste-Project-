@@ -90,6 +90,7 @@ def add_to_cart(request):
                 user=request.user, product=product)
             cart_item.quantity = int(quantity)
             cart_item.save()
+            messages.success(request,"Item added to your Cart")
         except :
             message = "no varient available"
             return render(request, 'flip/shopping-cart.html',{'message':message})
@@ -128,7 +129,7 @@ def remove_from_cart(request, product_id):
     
     product = get_object_or_404(ProductVarient, id=product_id)
     Ad_to_cart.objects.filter(user=request.user, product=product).delete()
-    messages.success(request, f'{product.product.name} was removed from your Cart.')
+    messages.info(request, f'{product.product.name} was removed from your Cart.')
     return redirect('cart')
 
 def add_to_wishlist(request, product_id):
@@ -142,9 +143,9 @@ def add_to_wishlist(request, product_id):
 
 @login_required(login_url='login')
 def wishlist(request):
-    cart_items = Ad_to_cart.objects.filter(user=request.user)
-    item_count = cart_items.count()
-    total = sum(item.product.offer_price * item.quantity for item in cart_items)
+    # cart_items = Ad_to_cart.objects.filter(user=request.user)
+    # item_count = cart_items.count()
+    # total = sum(item.product.offer_price * item.quantity for item in cart_items)
     wishlist_items = Wishlist.objects.filter(user=request.user)
     
     return render(request,'flip/wishlist.html', locals())    

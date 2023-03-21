@@ -27,7 +27,10 @@
 <link rel="stylesheet" href="{% static '/assets/css/lightbox.css' %}" >
 <link rel="stylesheet" href="{% static '/assets/css/style.css' %}" >
 
-
+<!--alertify CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 
 <!-- Icons/Glyphs -->
 <link rel="stylesheet" href="{% static '/assets/css/font-awesome.css' %}">
@@ -100,7 +103,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-3 logo-holder"> 
           <!-- ============================================================= LOGO ============================================================= -->
-          <div class="logo"> <a href="home.html"> <img src="{% static '/assets/images/logo.png' %}" alt="logo"> </a> </div>
+          <div class="logo"> <a href="{% url 'home' %}"> <img src="{% static '/assets/images/logo.png' %}" alt="logo"> </a> </div>
           <!-- /.logo --> 
           <!-- ============================================================= LOGO : END ============================================================= --> </div>
         <!-- /.logo-holder -->
@@ -299,8 +302,8 @@
                 <div class="products">
                   <div class="hot-deal-wrapper">
                     <div class="image"> 
-                    <a href="#">
-                    <img src="{{p.image1.url}}" alt=""> 
+                    <a href="{% url 'product_view' p.id %}">
+                    <img src="{{p.image1.url}}" alt="img"> 
                     
                     </a>
                     </div>
@@ -336,7 +339,7 @@
                     <div class="action">
                       <div class="add-cart-button btn-group">
                         <button class="btn btn-primary icon" data-toggle="dropdown" type="button"> <i class="fa fa-shopping-cart"></i> </button>
-                      <button class="btn btn-primary cart-btn"><a class="btn btn-primary" href="{% url 'cart' %}" >Add to cart</a></button>
+                      <button class="btn btn-primary cart-btn"><a class="btn btn-primary" href="{% url 'product_view' p.id %}" >Add to cart</a></button>
                       </div>
                     </div>
                     <!-- /.action --> 
@@ -1870,6 +1873,17 @@
 <script>
       ktt10.setup({ pageId: 1216720});
 </script>
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<script>
+    alertify.set('notifier','position', 'top-right');
+    {% for msg in messages %}
+        alertify.success('{{ msg }}');
+    {% endfor %}
+    
+   </script>
+
 </body>
 
 </html>

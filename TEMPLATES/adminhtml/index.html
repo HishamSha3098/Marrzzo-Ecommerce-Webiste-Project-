@@ -14,9 +14,12 @@
 	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 	{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> {% endcomment %}
 	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
+	<link rel="icon" type="image/x-icon" href="{% static '/assets/images/singlelogo.png' %}">
 
 	<title>Marrazo Admin-panel</title>
-
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 	<link href="{% static '/admin/css/app.css' %}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 	<style>
@@ -655,6 +658,8 @@
 			});
 		});
 	</script> {% endcomment %}
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
 	{% endblock script %}
 
 </body>

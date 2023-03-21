@@ -40,7 +40,7 @@
 					"currency": "INR",
 					"name": "Marrazzo", //your business name
 					"description": "Thank you for purchasing with us",
-					"image": "https://example.com/your_logo",
+					"image": "static/assets/images/singlelogo.png",
 					// "order_id": ordernumber, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
 					"handler": function (response){
 						// swal.fire("Your Payment id is",response.razorpay_payment_id,"success");

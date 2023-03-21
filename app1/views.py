@@ -251,11 +251,14 @@ def change_password(request) :
 
 
 def search_user(request) :
-    searching = request.GET['search']
-    if searching :
-        product = Product.objects.order_by('id').filter(Q(name__icontains=searching)|Q(offer_price__icontains=searching)|Q(brand__icontains=searching))
-    return render(request,'flip/category.html',{'products' : product})
 
+    try:
+        searching = request.GET['search']
+        if searching :
+            product = Product.objects.order_by('id').filter(Q(name__icontains=searching)|Q(offer_price__icontains=searching)|Q(brand__icontains=searching))
+        return render(request,'flip/category.html',{'products' : product})
+    except :
+         return redirect('product_list',0)
 
 def errorpage(request) :
     return render(request,'flip/404.html')

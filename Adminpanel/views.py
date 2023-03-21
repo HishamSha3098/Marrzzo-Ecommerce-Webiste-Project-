@@ -64,6 +64,7 @@ def admin_panel(request) :
     
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)        
 def add_category(request):
     if request.method == "POST":
         name = request.POST['name']
@@ -75,7 +76,9 @@ def add_category(request):
         except:
             msg2 = "something"
     return render(request, 'adminhtml/Add-category.html', locals())
+
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)        
 def view_category(request):
     Category= category.objects.all()
     paginator = Paginator(Category, 2) # divide the data into pages of 10 items each
@@ -91,6 +94,7 @@ def view_category(request):
     return render(request,'adminhtml/view-category.html',locals())
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def edit_category(request,pid):
     Category=category.objects.get(id=pid)
     if request.method=='POST':
@@ -103,6 +107,7 @@ def edit_category(request,pid):
     
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def delete_category(request,pid):
     try :
         Category=category.objects.get(id=pid)
@@ -115,6 +120,7 @@ def delete_category(request,pid):
 
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def add_product(request):
     categori = category.objects.all()
     
@@ -139,6 +145,7 @@ def add_product(request):
     return render(request, 'adminhtml/product-add.html', locals())
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def add_variant(request) :
     products = Product.objects.all()
     rams = product_ram.objects.all()
@@ -158,6 +165,7 @@ def add_variant(request) :
     return render(request, 'adminhtml/variant-add.html', locals())
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def view_product(request):
     product = Product.objects.all()
     paginator = Paginator(product, 4) # divide the data into pages of 10 items each
@@ -173,6 +181,7 @@ def view_product(request):
     return render(request, 'adminhtml/product-view.html', locals())
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def edit_product(request, pid):
     product = Product.objects.get(id=pid)
     Category = category.objects.all()
@@ -203,6 +212,7 @@ def edit_product(request, pid):
     return render(request, 'adminhtml/edit-product.html', locals())
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def delete_product(request, pid):
     product = Product.objects.get(id=pid)
     product.delete()
@@ -210,6 +220,7 @@ def delete_product(request, pid):
     return redirect('view_product')
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def adminLogin(request):
     msg = None
     if request.method == "POST":
@@ -228,6 +239,7 @@ def adminLogin(request):
     return render(request, 'admin_login.html', dic)
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def user_manage(request):
     users = User.objects.all()
     paginator = Paginator(users, 2) # divide the data into pages of 10 items each
@@ -244,6 +256,7 @@ def user_manage(request):
 
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def user_block(request,u_id) :
     users=User.objects.get(id=u_id)
     if users.is_active == True :
@@ -258,6 +271,7 @@ def user_block(request,u_id) :
 
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def order_view(request) :
     order= Order.objects.all()
     paginator = Paginator(order, 4) # divide the data into pages of 10 items each
@@ -275,6 +289,7 @@ def order_view(request) :
 
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def update_order_status(request, order_id):
     # get the order instance
     if request.method == 'POST':
@@ -298,6 +313,7 @@ def update_order_status(request, order_id):
 
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def view_coupen(request) :
     allcoupen=Coupon.objects.all()
     paginator = Paginator(allcoupen, 1) # divide the data into pages of 10 items each
@@ -315,6 +331,7 @@ def view_coupen(request) :
 
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def create_coupen(request) :
     if request.method == 'POST' :
         form=AddCoupen(request.POST)
@@ -332,6 +349,7 @@ def create_coupen(request) :
 
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def update_coupen(request,coupen_id) :
     coupen =get_object_or_404(Coupon,id=coupen_id)
     if request.method == 'POST' :
@@ -349,6 +367,7 @@ def update_coupen(request,coupen_id) :
 
 
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def delete_coupen(request,coupen_id) :
     Coupon.objects.get(id=coupen_id).delete()
 

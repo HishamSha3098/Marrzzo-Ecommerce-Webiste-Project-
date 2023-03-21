@@ -21,12 +21,12 @@
 				</div>
 			  <div class="formbg-inner padding-horizontal--48">
 				<span class="padding-bottom--15">Login to your account</span>
-				{%for message in messages%}
+				{% comment %} {%for message in messages%}
 				<div{%if message.tags%} class="alert alert-{{message.tags}}"{%endif%} role="alert">
 				  {{message}} 
 				 
 			  </div>
-			  {%endfor%}
+			  {%endfor%} {% endcomment %}
   
 				<form action="{% url 'login' %}" method="POST" id="stripe-login">
 					{% csrf_token %}
