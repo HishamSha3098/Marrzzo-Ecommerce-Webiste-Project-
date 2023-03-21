@@ -7,13 +7,13 @@
 			<main class="content">
 				<div class="container-fluid p-0">
 
-					<h1 class="h3 mb-3">Category Managment</h1>
+					<h1 class="h3 mb-3">Product Managment</h1>
 
 					<div class="row">
 						<div class="col-6">
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title mb-0"> Add Category</h5>
+									<h5 class="card-title mb-0"> Edit Product</h5>
 								</div>
 								<div class="card-body">
 									<form method="POST">
@@ -31,10 +31,7 @@
 											<input type="text" name="discount" id="form5Example1" value="{{product.offer_price}}" placeholder="Enter Offer Price" class="form-control" />
 											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
 										  </div>
-										  <div class="form-outline mb-4">
-											<input type="text" name="quantity" id="form5Example1" value="{{product.quantity}}" placeholder="Enter quantity" class="form-control" />
-											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
-										  </div>
+										  
 										  <div class="form-outline mb-4">
 											<input type="text" name="brand" id="form5Example1" value="{{product.brand}}" placeholder="Enter Brand" class="form-control" />
 											{% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}

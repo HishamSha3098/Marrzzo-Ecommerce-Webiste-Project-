@@ -13,49 +13,54 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.cache import cache_control
 
 # Create your views here.
 @user_passes_test(lambda u: u.is_superuser)
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)        
 def admin_panel(request) :
-        if request.user.is_staff :
-            total=0
-            grand_total=0
-            ordertotal=Order.objects.all()
-            ordercount=ordertotal.count()
-            deliver=Order.objects.filter(status='Delivered')
-            deliver_count = deliver.count()
-            users=User.objects.all()
-            usercount=users.count()
-            userprofiles=userprofile.objects.get(user=request.user)
-            for item in ordertotal :
-                total= total+item.order_total
-                grand_total=total
+        try :
+            if request.user.is_staff :
+                total=0
+                grand_total=0
+                ordertotal=Order.objects.all()
+                ordercount=ordertotal.count()
+                deliver=Order.objects.filter(status='Delivered')
+                deliver_count = deliver.count()
+                users=User.objects.all()
+                usercount=users.count()
+                userprofiles=userprofile.objects.get(user=request.user)
+                for item in ordertotal :
+                    total= total+item.order_total
+                    grand_total=total
 
-            today = datetime.now()
-            last_12_months = today - timedelta(days=365)
-            data = Order.objects.filter(created_at__gte=last_12_months) \
-                            .annotate(month=TruncMonth('created_at')) \
-                            .values('month') \
-                            .annotate(count=Count('id')) \
-                            .order_by('month')
+                today = datetime.now()
+                last_12_months = today - timedelta(days=365)
+                data = Order.objects.filter(created_at__gte=last_12_months) \
+                                .annotate(month=TruncMonth('created_at')) \
+                                .values('month') \
+                                .annotate(count=Count('id')) \
+                                .order_by('month')
 
-            months = [d['month'].strftime('%b %Y') for d in data]
-            counts = [d['count'] for d in data]
+                months = [d['month'].strftime('%b %Y') for d in data]
+                counts = [d['count'] for d in data]
 
-        
+            
 
-            chart_data = {
-                'months': months,
-                'counts': counts,
-                'ordercount' :ordercount,
-                'grand_total' :grand_total,
-                'usercount': usercount,
-                'userprofiles':userprofiles,
-                'deliver_count' : deliver_count
-            }
-            return render(request,'adminhtml/index.html',chart_data)
-        else:
-            return redirect('home')
+                chart_data = {
+                    'months': months,
+                    'counts': counts,
+                    'ordercount' :ordercount,
+                    'grand_total' :grand_total,
+                    'usercount': usercount,
+                    'userprofiles':userprofiles,
+                    'deliver_count' : deliver_count
+                }
+                return render(request,'adminhtml/index.html',chart_data)
+            else:
+                return redirect('home')
+        except :
+            return redirect('errorpage')
     
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -68,7 +73,7 @@ def add_category(request):
             # return redirect(view_category)
 
         except:
-            msg2 = "dsdss"
+            msg2 = "something"
     return render(request, 'adminhtml/Add-category.html', locals())
 @user_passes_test(lambda u: u.is_superuser)
 def view_category(request):
@@ -177,7 +182,7 @@ def edit_product(request, pid):
         cat = request.POST['category']
         
         brand=request.POST['brand']
-        quantity = request.POST['quantity']
+        # quantity = request.POST['quantity']
         discount = request.POST['discount']
         desc = request.POST['desc']
         try:
@@ -192,7 +197,7 @@ def edit_product(request, pid):
         except:
             pass
         catobj = category.objects.get(id=cat)
-        Product.objects.filter(id=pid).update(name=name, price=price, offer_price=discount,quantity=quantity,Category=catobj, description=desc,)
+        Product.objects.filter(id=pid).update(name=name, price=price, offer_price=discount,Category=catobj, description=desc,)
         messages.success(request, "Product Updated")
         return redirect(view_product)
     return render(request, 'adminhtml/edit-product.html', locals())
