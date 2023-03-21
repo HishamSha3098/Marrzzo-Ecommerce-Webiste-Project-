@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from product.models import category,Product,product_ram,product_storage,Coupon,ProductVarient
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
-from order.models import Order
+from order.models import Order,OrderProduct
 from app1.models import userprofile
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
@@ -102,6 +102,7 @@ def delete_category(request,pid):
     try :
         Category=category.objects.get(id=pid)
         Category.delete()
+        return redirect(view_category)
 
     except:
         pass
@@ -271,28 +272,24 @@ def order_view(request) :
 @user_passes_test(lambda u: u.is_superuser)
 def update_order_status(request, order_id):
     # get the order instance
-    order = Order.objects.get(order_number=order_id)
-
     if request.method == 'POST':
-        # get the chosen status option from the form
-        new_status = request.POST['status']
-
-        # update the status of the order
-        order.status = new_status
-        order.save()
-
+        status = request.POST['status']
+        order_status = Order.objects.get(order_number=order_id)
+        order_status.status = status
+        order_status.save()
         return redirect(order_view)
 
-    # get the status options
-    status_options = order.STATUS
+    else :
+        order = Order.objects.get(order_number=order_id)
+        orders=OrderProduct.objects.filter(order=order)
+    context={
+        'order':order,
+        'orders':orders
+        }
+
     
 
-    # pass the options to the context dictionary
-    context = {
-        'status_options': status_options
-    }
-
-    return render(request, 'adminhtml/order-status.html', context)
+    return render(request, 'adminhtml/view-orderirem.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -351,6 +348,7 @@ def delete_coupen(request,coupen_id) :
     Coupon.objects.get(id=coupen_id).delete()
 
     return redirect(view_coupen)
+
 
 
 

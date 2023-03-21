@@ -20,7 +20,7 @@
 										{% csrf_token %}
 										<!-- Name input -->
 										<div class="form-outline mb-4">
-										  <input type="text" name="name" id="form5Example1" placeholder="Enter Category Name" class="form-control" />
+										  <input type="text" name="name" id="form5Example1" value="{{Category.name}}" class="form-control" />
 										  {% comment %} <label class="form-label" for="form5Example1">Category Name</label> {% endcomment %}
 										</div>
 									  

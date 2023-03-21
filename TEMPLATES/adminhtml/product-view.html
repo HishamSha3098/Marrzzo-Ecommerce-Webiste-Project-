@@ -91,7 +91,7 @@
 												<td class="d-none d-xl-table-cell">{{p.Category}}</td>
 												{% comment %} <td class="d-none d-xl-table-cell"><a href="{% url 'edit_category' c.id %}" class="fa fa-pen"></a></td> {% endcomment %}
 												<td class="d-none d-xl-table-cell"><span>{{p.quantity}}</span></td>
-												<td class="d-md-table-cell"><a href="{% url 'edit_product' p.id %}" class="fa fa-pen"></a>&nbsp;&nbsp;&nbsp;<a href="{% url 'delete_product' p.id %}" class="fa fa-trash" style="color:red;"></a></td>
+												<td class="d-md-table-cell"><a href="{% url 'edit_product' p.id %}" class="fa fa-pen"></a>&nbsp;&nbsp;&nbsp;<a href="{% url 'delete_product' p.id %}" onclick="return confirm('are you sure?')" class="fa fa-trash" style="color:red;"></a></td>
 											</tr>
 											{% endfor %}
 										</tbody>
@@ -103,6 +103,29 @@
 
 				</div>
 			</main>
+
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+			<script>
+				function confirmation(){
+					Swal.fire({
+						title: "Are you sure?",
+						text: "Once deleted, you will not be able to ",
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					  })
+					  .then((willDelete) => {
+						if (willDelete) {
+							Swal.fire("Poof! Product  has been deleted!", {
+							icon: "success",
+						  });
+						} else {
+							Swal.fire("Your product  is safe!");
+						}
+					  });
+				}
+			</script>
 
 			
 			{% endblock content %}

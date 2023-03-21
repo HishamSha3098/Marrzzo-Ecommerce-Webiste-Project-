@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from .forms import updateprofile,profileupdate,OrderForm
 from .models import userprofile,Address
 from order.models import Order
-
+from django.http import JsonResponse
 # from .forms import CreateUserForm
 
 # from django.views.decorators.cache import never_cache
@@ -71,35 +71,58 @@ def register(request):
         email = request.POST['email']
         password = request.POST['password']
         confirmpass = request.POST['confirmpass'] 
-        form = User.objects.create_user(username=username,password=password,email=email)
-        if form is not None:
-            form.save()
-       #      email=form.cleaned_data.get('email')
-       #      username=form.cleaned_data.get('username')
-            usr=User.objects.get(username=username)
-       #      print(usr)
-       #      usr.email=email
-            usr.first_name=first_name
-            usr.is_active=False
-            usr.save()
-            usr_otp=random.randint(100000,999999)
-            print(usr_otp)
-            
-            UserOTP.objects.create(user=usr,otp=usr_otp)
-            mess=f'Hello\t{usr.first_name},\nYour OTP is {usr_otp}\nThanks!'
-            send_mail(
-                    "welcome to DOT.SHOP your Email",
-                    mess,
-                    settings.EMAIL_HOST_USER,
-                    [usr.email],
-                    fail_silently=False
-                )
-            return render(request,'flip/register.html',{'otp': True, 'usr': usr}) 
+        try :
+            form = User.objects.create_user(username=username,password=password,email=email)
+            if form is not None:
+                form.save()
+        #      email=form.cleaned_data.get('email')
+        #      username=form.cleaned_data.get('username')
+                usr=User.objects.get(username=username)
+        #      print(usr)
+        #      usr.email=email
+                usr.first_name=first_name
+                usr.is_active=False
+                usr.save()
+                usr_otp=random.randint(100000,999999)
+                print(usr_otp)
+                
+                UserOTP.objects.create(user=usr,otp=usr_otp)
+                mess=f'Hello\t{usr.first_name},\nYour OTP is {usr_otp}\nThanks!'
+                send_mail(
+                        "welcome to DOT.SHOP your Email",
+                        mess,
+                        settings.EMAIL_HOST_USER,
+                        [usr.email],
+                        fail_silently=False
+                    )
+        except:
+                
+                usr=User.objects.get(username=username)
+                if usr.is_active == True :
+                    messages.warning(request,f'User Already Registerd,Please Login')
+                    return render(request,'flip/register.html') 
+
+                
+                else :
+                    usr.first_name=first_name
+                    usr.is_active=False
+                    usr.save()
+                    usr_otp=random.randint(100000,999999)
+                    print(usr_otp)
+                    
+                    UserOTP.objects.create(user=usr,otp=usr_otp)
+                    mess=f'Hello\t{usr.first_name},\nYour OTP is {usr_otp}\nThanks!'
+                    send_mail(
+                            "welcome to DOT.SHOP your Email",
+                            mess,
+                            settings.EMAIL_HOST_USER,
+                            [usr.email],
+                            fail_silently=False
+                        )
+                    return render(request,'flip/register.html',{'otp': True, 'usr': usr}) 
                 # print("OTP sent to:", usr.email)
        #      return render(request,'index.html'{'otp':True,'usr':usr})
-        else:
-            errors = form.errors
-            print(form.errors)
+        
     else:
             errors = ''
 #     form=CreateUserForm()
@@ -110,30 +133,35 @@ def register(request):
 
 
 def resend_otp(request,username):
-       get_usr = username
+        get_usr = username
        
       
-       if User.objects.filter(username = get_usr).exists() and not User.objects.get(username = get_usr).is_active:
-              usr = User.objects.get(username=get_usr)
-              usr_otp = random.randint(100000, 999999)
-              UserOTP.objects.create(user = usr, otp = usr_otp)
-              mess = f"Hello, {usr.first_name},\nYour OTP is {usr_otp}\nThanks!"
+        if User.objects.filter(username = get_usr).exists() and not User.objects.get(username = get_usr).is_active:
+            usr = User.objects.get(username=get_usr)
+            usr_otp = random.randint(100000, 999999)
+            UserOTP.objects.create(user = usr, otp = usr_otp)
+            mess = f"Hello, {usr.first_name},\nYour OTP is {usr_otp}\nThanks!"
 
-              send_mail(
-                     "Welcome to DOT.SHOP - Verify Your Email",
-                     mess,
-                     settings.EMAIL_HOST_USER,
-                     [usr.email],
-                     fail_silently = False
-                     )
-              messages.info(request,f'Resend successfull')
-              return render(request,'flip/register.html',{'otp': True, 'usr': usr})
+            try :
+                send_mail(
+                        "Welcome to DOT.SHOP - Verify Your Email",
+                        mess,
+                        settings.EMAIL_HOST_USER,
+                        [usr.email],
+                        fail_silently = False
+                        )
+                messages.info(request,f'Resend successfull')
+                return render(request,'flip/register.html',{'otp': True, 'usr': usr})
+            except :
+                 error = "otp error"
+                 return JsonResponse({'data':error})
+                 
 
-       return HttpResponse("error Can't Send OTP ")
+        
         
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)        
 def login(request) :
-       if request.method == 'POST' :
+        if request.method == 'POST' :
               username = request.POST['email']
               password = request.POST['password']
 
@@ -150,7 +178,7 @@ def login(request) :
               else :
                      messages.error(request,'User name or Password is incorrect')  
                      return redirect(login)
-       else :   
+        else :   
               return render(request,"flip/sign-in.html")
 
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)

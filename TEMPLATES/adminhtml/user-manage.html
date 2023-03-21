@@ -86,7 +86,7 @@
 												<td class="d-none d-xl-table-cell">{{u.email}}</td>
 												{% comment %} <td class="d-none d-xl-table-cell"><i class="fa fa-pen"></td> {% endcomment %}
 													{% if u.is_active %}
-												<td><a class="btn btn-sm btn-danger" href="{% url 'userblock' u.id %}">Block</a></td>
+												<td><a class="btn btn-sm btn-danger" href="{% url 'userblock' u.id %}" onclick="return confirm('are you sure?')">Block</a></td>
 												<td class="d-none d-md-table-cell"><span class="badge bg-success">{{u.is_active}}</span></td>
 													{% else %}
 													<td><a class="btn btn-sm btn-success" href="{% url 'userblock' u.id %}">Unblock</a></td>

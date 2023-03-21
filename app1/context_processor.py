@@ -13,7 +13,7 @@ def context_values(request) :
         
         item_count = cart_items.count()
     except:
-        cart_items=""
+        cart_items=0
         total=0
         item_count=0
 

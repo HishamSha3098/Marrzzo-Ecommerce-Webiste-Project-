@@ -86,7 +86,7 @@
 												<td class="d-none d-xl-table-cell">{{c.created}}</td>
 												<td class="d-none d-xl-table-cell"><a href="{% url 'edit_category' c.id %}" class="fa fa-pen"></a></td>
 												<td><span class="badge bg-success">Done</span></td>
-												<td class="d-none d-md-table-cell"><a href="{% url 'delete_category' c.id %}" class="fa fa-trash" onclick="option()" style="color:red;"></a></td>
+												<td class="d-none d-md-table-cell"><a href="{% url 'delete_category' c.id %}" class="fa fa-trash" onclick="return confirm('Are you sure?')" style="color:red;"></a></td>
 											</tr>
 											{% endfor %}
 										</tbody>

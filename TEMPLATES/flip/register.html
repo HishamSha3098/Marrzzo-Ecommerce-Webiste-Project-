@@ -20,7 +20,12 @@
 				</div>
 			  <div class="formbg-inner padding-horizontal--48">
 				<span class="padding-bottom--15">Register your account</span>
-                
+                {%for message in messages%}
+				<div{%if message.tags%} class="alert alert-{{message.tags}}"{%endif%} role="alert">
+				  {{message}} 
+				 
+			  </div>
+			  {%endfor%}
 
                 {% if otp %}
                 <form action="{% url 'register' %}" method="POST" id="stripe-login">
@@ -57,7 +62,7 @@
   
 				  
 				  <div class="field padding-bottom--24">
-					<input style="background: #4d88ff;" href="#" type="submit" value="Login">
+					<input style="background: #4d88ff;" href="#" type="submit" value="Register">
 				  </div>
 				  <div class="field">
 					<a class="ssolink" href="{% url 'login' %}">Already Have a account? Login</a>
@@ -74,4 +79,25 @@
 	  </div>
 	</div>
   </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+	var user = {usr.username} 
+	$.ajax({
+		url: "/resend_otp/" + user +"/",
+		dataType: 'json',
+		success: function(data) {
+			swal.fire("Otp Error","sorry OTP Server down ,try again ! ","error").then((value)=> {
+		
+				window.location.href="/register/";
+
+									  
+										
+				 }
+							   
+				);
+		}
+	});
+	
+  </script>
 {% endblock content %}

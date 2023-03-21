@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 
 
+
 class UserOTP(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     time_st=models.DateTimeField(auto_now=True)

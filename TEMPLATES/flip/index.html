@@ -152,6 +152,7 @@
             </a>
             <ul class="dropdown-menu">
               <li>
+                {% if cart_items != 0 %}
                 {% for c in cart_items %}
                 <div class="cart-item product-summary">
                   <div class="row">
@@ -166,6 +167,7 @@
                   </div>
                 </div>
                 {% endfor %}
+                {% endif %}
                 <!-- /.cart-item -->
                 <div class="clearfix"></div>
                 <hr>
@@ -334,7 +336,7 @@
                     <div class="action">
                       <div class="add-cart-button btn-group">
                         <button class="btn btn-primary icon" data-toggle="dropdown" type="button"> <i class="fa fa-shopping-cart"></i> </button>
-                        <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                      <button class="btn btn-primary cart-btn"><a class="btn btn-primary" href="{% url 'cart' %}" >Add to cart</a></button>
                       </div>
                     </div>
                     <!-- /.action --> 
