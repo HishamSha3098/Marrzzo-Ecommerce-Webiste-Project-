@@ -68,13 +68,17 @@ def admin_panel(request) :
 def add_category(request):
     if request.method == "POST":
         name = request.POST['name']
-        try:
-            category.objects.create(name=name)
-            msg = "Category added"
+        
+        if category.objects.filter(name__iexact=name.lower().replace(' ', '')).exists() :
+            
+            msg2 = "something"
+                
             # return redirect(view_category)
 
-        except:
-            msg2 = "something"
+        else :
+            category.objects.create(name=name)
+            msg = "Category added"
+            
     return render(request, 'adminhtml/Add-category.html', locals())
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -106,7 +110,7 @@ def edit_category(request,pid):
     return render(request,'adminhtml/update-category.html',locals())
     
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_superuser,login_url='login')
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def delete_category(request,pid):
     try :
@@ -174,7 +178,7 @@ def view_product(request):
     if request.method == 'POST' :
         search = request.POST['search']
         
-        allproduct =  Product.objects.order_by('id').filter(Q(name__icontains=search)|Q(offer_price__icontains=search)|Q(quantity__icontains=search))
+        allproduct =  Product.objects.order_by('id').filter(Q(name__icontains=search)|Q(offer_price__icontains=search)|Q(description__icontains=search))
 
     else :
          allproduct = paginator.get_page(page_number)

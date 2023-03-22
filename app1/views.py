@@ -50,7 +50,7 @@ def register(request):
     usr = None
     if request.method=='POST':
         get_otp=request.POST.get('otp')
-        
+        print(get_otp,'-------------------------------')
         if get_otp:
             
             get_usr = request.POST.get('usr')
@@ -65,45 +65,27 @@ def register(request):
                 return redirect('login')
             else:
                 messages.warning(request,f'You Entered a wrong OTP')
-                return render(request,'flip/sign-in.html',{'otp':True,'usr':usr})
+                return render(request,'flip/register.html',{'otp':True,'usr':usr})
         first_name = request.POST['name']
         username = request.POST['email']
         email = request.POST['email']
         password = request.POST['password']
-        confirmpass = request.POST['confirmpass'] 
-        try :
-            form = User.objects.create_user(username=username,password=password,email=email)
-            if form is not None:
-                form.save()
-        #      email=form.cleaned_data.get('email')
-        #      username=form.cleaned_data.get('username')
-                usr=User.objects.get(username=username)
-        #      print(usr)
-        #      usr.email=email
-                usr.first_name=first_name
-                usr.is_active=False
-                usr.save()
-                usr_otp=random.randint(100000,999999)
-                print(usr_otp)
+        confirmpass = request.POST['confirmpass']
+        if password != confirmpass:
+             messages.error(request,'Password Not Matching')
+             return redirect(register) 
+        else :
                 
-                UserOTP.objects.create(user=usr,otp=usr_otp)
-                mess=f'Hello\t{usr.first_name},\nYour OTP is {usr_otp}\nThanks!'
-                send_mail(
-                        "welcome to DOT.SHOP your Email",
-                        mess,
-                        settings.EMAIL_HOST_USER,
-                        [usr.email],
-                        fail_silently=False
-                    )
-        except:
-                
-                usr=User.objects.get(username=username)
-                if usr.is_active == True :
-                    messages.warning(request,f'User Already Registerd,Please Login')
-                    return render(request,'flip/register.html') 
-
-                
-                else :
+            try :
+                print("--------------------im in else of post-and in try-------------")
+                form = User.objects.create_user(username=username,password=password,email=email)
+                if form is not None:
+                    form.save()
+            #      email=form.cleaned_data.get('email')
+            #      username=form.cleaned_data.get('username')
+                    usr=User.objects.get(username=username)
+            #      print(usr)
+            #      usr.email=email
                     usr.first_name=first_name
                     usr.is_active=False
                     usr.save()
@@ -120,14 +102,40 @@ def register(request):
                             fail_silently=False
                         )
                     return render(request,'flip/register.html',{'otp': True, 'usr': usr}) 
+                    
+            except:
+                    print("--------------------im in else of post-and in cacheee-------------")
+                    usr=User.objects.get(username=username)
+                    if usr.is_active == True :
+                        messages.warning(request,f'User Already Registerd,Please Login')
+                        return render(request,'flip/register.html') 
+
+                    
+                    else :
+                        usr.first_name=first_name
+                        usr.is_active=False
+                        usr.save()
+                        usr_otp=random.randint(100000,999999)
+                        print(usr_otp)
+                        
+                        UserOTP.objects.create(user=usr,otp=usr_otp)
+                        mess=f'Hello\t{usr.first_name},\nYour OTP is {usr_otp}\nThanks!'
+                        send_mail(
+                                "welcome to DOT.SHOP your Email",
+                                mess,
+                                settings.EMAIL_HOST_USER,
+                                [usr.email],
+                                fail_silently=False
+                            )
+                        return render(request,'flip/register.html',{'otp': True, 'usr': usr}) 
                 # print("OTP sent to:", usr.email)
        #      return render(request,'index.html'{'otp':True,'usr':usr})
         
-    else:
-            errors = ''
-#     form=CreateUserForm()
-    context = {'errors': errors}
-    return render(request,'flip/register.html',context)
+    
+            
+        
+    
+    return render(request,'flip/register.html')
 
 
 
@@ -153,8 +161,8 @@ def resend_otp(request,username):
                 messages.info(request,f'Resend successfull')
                 return render(request,'flip/register.html',{'otp': True, 'usr': usr})
             except :
-                 error = "otp error"
-                 return JsonResponse({'data':error})
+                 messages.error(request,'Otp Server Busy')
+                 return redirect(register)
                  
 
         

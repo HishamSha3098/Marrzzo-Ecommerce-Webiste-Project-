@@ -63,6 +63,8 @@ def order(request) :
             data.country = check[5]
             data.post_code = check[3]
             data.order_total = discount
+            code = Ad_to_cart.objects.get(user=current_user)
+            data.coupen = code.coupen
 
             data.save()        
             

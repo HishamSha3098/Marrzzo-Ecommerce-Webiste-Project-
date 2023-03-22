@@ -7,7 +7,7 @@ from .forms import CouponForm
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-
+from order.models import Order
 
 def product_list(request,id):
 
@@ -119,7 +119,19 @@ def cart(request):
     coupon_id = request.session.get('coupon_id')
     if coupon_id:
         coupon = Coupon.objects.get(id=coupon_id)
-        discount = int(total)-int(coupon.discount)
+        Ad_to_cart.objects.filter(user=request.user).update(coupen=coupon.code)
+        print(coupon,'-------------------------------this is coupen----------------')
+        try :
+            check = Order.objects.get(user=request.user,coupen=coupon.code)
+        except :
+            check=None
+        print(check,'-------------------this is check value-----------------')
+        if check is not None :
+            messages.info(request,'Coupen Already Used')
+            discount = 0
+        else :
+            messages.info(request,'Coupen Added Successfully')
+            discount = int(total)-int(coupon.discount)
     else:
         discount = 0
     

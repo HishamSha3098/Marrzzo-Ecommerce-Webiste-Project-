@@ -60,6 +60,7 @@ class Ad_to_cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(ProductVarient, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    coupen = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     
 

@@ -46,7 +46,7 @@ class Order(models.Model):
     order_discount = models.FloatField(default=0,null=True)
     
     status = models.CharField(max_length=50,choices=STATUS,default='Order Confirmed')
-    # coupen = models.FloatField(default=0,null=True)
+    coupen = models.CharField(default=0,null=True,max_length=50)
     is_ordered = models.BooleanField(default=False)
     is_returned = models.BooleanField(default=False)
     return_reason = models.CharField(max_length=50, blank=True)
