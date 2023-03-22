@@ -87,7 +87,7 @@
 										<tbody>
 											{% for o in allorder %}
 											<tr>
-												<td>{{forloop.counter}}</td>
+												<td>{{forloop.counter0|add:allorder.start_index}}</td>
 												<td class="d-xl-table-cell">{{o.order_number}}</td>
 												<td class="d-none d-xl-table-cell">{{o.first_name}}</td>
 												<td class="d-none d-xl-table-cell">{{o.address}}</td>
