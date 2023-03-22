@@ -85,7 +85,7 @@
 										<tbody>
 											{% for p in allproduct %}
 											<tr>
-												<td>{{forloop.counter0|add:allproduct.start_index}}</td>
+												<td>{{forloop.counter}}</td>
 												<td><img src="{{p.image1.url}}" style="width:100px;"></td>
 												<td>{{p.name|slice:":30"}}</td>
 												<td class="d-none d-xl-table-cell">{{p.Category}}</td>
