@@ -277,7 +277,7 @@ def user_block(request,u_id) :
 @user_passes_test(lambda u: u.is_superuser)
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)  
 def order_view(request) :
-    order= Order.objects.all()
+    order= Order.objects.all().order_by('-id')
     paginator = Paginator(order, 4) # divide the data into pages of 10 items each
     page_number = request.GET.get('page') # get the current page number from the URL query string
    

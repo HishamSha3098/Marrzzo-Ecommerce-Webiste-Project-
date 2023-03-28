@@ -179,6 +179,7 @@ def add_coupon(request):
             request.session['coupon_id'] = coupon.id
         except Coupon.DoesNotExist:
             request.session['coupon_id'] = None
+            messages.info(request,'Sorry! Coupen Not Valid')
     return redirect('cart',)
 
 def product_filter(request):

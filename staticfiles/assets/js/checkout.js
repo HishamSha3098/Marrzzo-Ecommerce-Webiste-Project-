@@ -55,12 +55,14 @@
 						csrfmiddlewaretoken: token
 		
 						}
-		
+						console.log("im before ajax")
 						$.ajax({
 							method : "POST",
 							url :"/order/place-order/",
 							data : data,
 							success : function(responseb){
+						console.log("im inside ajax")
+
 							swal.fire("Congratulations",responseb.status,"success").then((value)=> {
 		
 								window.location.href="/order/invoice/" + ordernumber + "/";
@@ -78,8 +80,10 @@
 		
 						});
 		
+						console.log("im after ajax")
 		
 					},
+					
 					"prefill": {
 						"name": fname, //your customer's name
 						"email": email,
