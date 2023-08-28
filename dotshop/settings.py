@@ -139,7 +139,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.sendinblue.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ihthishamanu@gmail.com'
-EMAIL_HOST_PASSWORD = '7KRFy3ab1OBjmv0Z'
+EMAIL_HOST_PASSWORD = '#######'
 EMAIL_USE_TLS = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
